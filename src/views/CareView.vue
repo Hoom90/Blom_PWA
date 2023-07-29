@@ -1,8 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import {ref} from 'vue'
+import { RouterLink} from 'vue-router'
 import cities from '../cities.json'
-
 // stage 1
 const plantHealth = ref('')
 const plantName = ref('')

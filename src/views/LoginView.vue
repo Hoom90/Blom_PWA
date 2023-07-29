@@ -19,6 +19,7 @@ const loggedIn = computed(() => {
 
 onMounted(() => {
   if (loggedIn.value) {
+    
     router.push('/');
   }
 })

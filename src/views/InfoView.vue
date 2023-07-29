@@ -1,14 +1,15 @@
 <script setup>
-import { onBeforeMount , computed , ref } from 'vue'
+import { onBeforeMount , computed , ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import store from '../store';
 import router from '../router';
-import serverURL from '../router/serverAddress'
+import serverURL from '../router/serverAddress';
 
 const userData = ref(null)
 const username = ref(null)
 const phone = ref(null)
 const hasImage = ref(false)
+const hasData = ref(true)
 const currentUser = computed(() =>{
   return store.state.auth.auth.user;
 })
@@ -26,6 +27,7 @@ onBeforeMount(()=>{
       }
       username.value = userData.value.username
       phone.value = userData.value.phone
+      hasData.value = false
     }
     getData()
   }
@@ -42,12 +44,14 @@ const logout = () =>{
   <div class="flex flex-col justify-center text-center mb-10 p-[20px]">
 
     <div class="flex gap-[15px] items-center py-[10px] mb-[10px]">
-      <div class="max-w-[80px] max-h-[80px] border rounded-full p-[3px]">
+      <div class="w-[80px] h-[80px] border rounded-full p-[3px]">
         <img v-if="hasImage" :src="userData.image" class="rounded-full" alt="userImg">
-        <img v-else :src="serverURL+'/library/images/icon.png'" class="rounded-full" alt="userImg">
+        <img v-else :src="serverURL+'/library/images/icon.png'" class="rounded-full bg-gray-100 w-full h-full" alt="">
       </div>
       <div class="flex flex-col gap-1">
         <span class="font-bold text-[20px]">{{ username }}</span>
+        <span class="bg-gray-100 rounded-full h-2 w-[200px]" v-if="hasData"></span>
+        <span class="bg-gray-100 rounded-full h-2" v-if="hasData"></span>
         <span class="text-[14px] text-[#c9c9c9]">{{ phone }}</span>
       </div>
     </div>

@@ -368,8 +368,10 @@ async function savePlantData() {
   formData.append('light',  light.value)
   formData.append('soil',  soil.value)
   formData.append('Temp',  Temp.value)
+  formData.append('symptom',  symptom.value)
   formData.append('fileName',filename.value)
   formData.append('file',file.value)  
+//   console.log(formData)
   await fetch(API_URL + "flowers", {
     method: "POST",
     body: formData,
