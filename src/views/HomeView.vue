@@ -32,10 +32,10 @@ onMounted(() => {
         <!-- header -->
         <div class="flex justify-between items-center">
             <RouterLink to="/profile" class="w-[40px]">
-                <img :src="serverURL+'/library/images/icon.png'" class="rounded-full" alt="">
+                <img :src="serverURL+'/library/images/icon.avif'" loading="lazy" class="rounded-full" alt="">
             </RouterLink>
             <RouterLink to="/" class="w-[74px]">
-                <img :src="serverURL+'/library/images/logo-2.avif'" alt="logo">
+                <img :src="serverURL+'/library/images/logo-2.avif'" loading="lazy" alt="logo">
             </RouterLink>
             <RouterLink to="/inbox">
                 <i class="relative w-[20px] h-[20px]">
@@ -51,10 +51,10 @@ onMounted(() => {
         <div class="h-[215px] w-full relative">
             <div class="w-full h-[200px] relative overflow-hidden rounded-md">
                 <div class="slider" ref="slider">
-                    <img :src="serverURL+'/library/images/sunflower.avif'" alt="Image">
-                    <img :src="serverURL+'/library/images/sunflower.avif'" alt="Image">
-                    <img :src="serverURL+'/library/images/sunflower.avif'" alt="Image">
-                    <img :src="serverURL+'/library/images/sunflower.avif'" alt="Image">
+                    <img :src="serverURL+'/library/images/sunflower.avif'" loading="lazy" alt="Image">
+                    <img :src="serverURL+'/library/images/sunflower.avif'" loading="lazy" alt="Image">
+                    <img :src="serverURL+'/library/images/sunflower.avif'" loading="lazy" alt="Image">
+                    <img :src="serverURL+'/library/images/sunflower.avif'" loading="lazy" alt="Image">
                 </div>
             </div>
             <div class="dots-container">
@@ -166,7 +166,7 @@ onMounted(() => {
     <div class='flex gap-[10px] p-[20px] my-[50px] mb-[80px] h-[300px]'>
         <div class="w-1/2 flex flex-col gap-[10px] h-full">
             <RouterLink to="/blog/1" class="h-[60%] relative">
-                <img :src="serverURL+'/library/images/monstera.avif'" class=" w-full h-full rounded-md object-cover" alt="">
+                <img :src="serverURL+'/library/images/monstera.avif'" loading="lazy" class=" w-full h-full rounded-md object-cover" alt="">
                 <div class="absolute top-0 h-full bg-[#00000071] text-white w-full py-[5px] flex flex-col justify-end rounded-md text-[12px]">
                     <div class="flex gap-[5px] items-center w-fit p-[5px] rounded-md">
                         <i fill="currentcolor">                            
@@ -180,7 +180,7 @@ onMounted(() => {
                 </div>
             </RouterLink>
             <RouterLink to="/blog/2" class="h-[40%] relative">
-                <img :src="serverURL+'/library/images/lily-of-the-vally.avif'" class="w-full h-full rounded-md object-cover" alt="">
+                <img :src="serverURL+'/library/images/lily-of-the-vally.avif'" loading="lazy" class="w-full h-full rounded-md object-cover" alt="">
                 <div class="absolute top-0 h-full bg-[#00000071] text-white w-full py-[5px] flex flex-col justify-end rounded-md text-[12px]">
                     <div class="flex gap-[5px] items-center w-fit p-[5px] rounded-md">
                         <i fill="currentcolor">                            
@@ -197,7 +197,7 @@ onMounted(() => {
         
         <div class="w-1/2 flex flex-col gap-[10px] h-full">
             <RouterLink to="/blog/3" class="h-[40%] relative">
-                <img :src="serverURL+'/library/images/sunflower.avif'" class="w-full h-full rounded-md object-cover" alt="">
+                <img :src="serverURL+'/library/images/sunflower.avif'" loading="lazy" class="w-full h-full rounded-md object-cover" alt="">
                 <div class="absolute top-0 h-full bg-[#00000071] text-white w-full py-[5px] flex flex-col justify-end rounded-md text-[12px]">
                     <div class="flex gap-[5px] items-center w-fit p-[5px] rounded-md">
                         <i fill="currentcolor">                            
@@ -211,7 +211,7 @@ onMounted(() => {
                 </div>
             </RouterLink>
             <RouterLink to="/blog/4" class="h-[60%] relative">
-                <img :src="serverURL+'/library/images/petus.avif'" class="w-full h-full rounded-md object-cover" alt="">
+                <img :src="serverURL+'/library/images/petus.avif'" loading="lazy" class="w-full h-full rounded-md object-cover" alt="">
                 <div class="absolute top-0 h-full bg-[#00000071] text-white w-full py-[5px] flex flex-col justify-end rounded-md text-[12px]">
                     <div class="flex gap-[5px] items-center w-fit p-[5px] rounded-md">
                         <i fill="currentcolor">                            

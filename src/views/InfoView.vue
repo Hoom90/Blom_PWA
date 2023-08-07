@@ -46,7 +46,7 @@ const logout = () =>{
     <div class="flex gap-[15px] items-center py-[10px] mb-[10px]">
       <div class="w-[80px] h-[80px] border rounded-full p-[3px]">
         <img v-if="hasImage" :src="userData.image" class="rounded-full" alt="userImg">
-        <img v-else :src="serverURL+'/library/images/icon.png'" class="rounded-full bg-gray-100 w-full h-full" alt="">
+        <img v-else :src="serverURL+'/library/images/icon.avif'" class="rounded-full bg-gray-100 w-full h-full" alt="">
       </div>
       <div class="flex flex-col gap-1">
         <span class="font-bold text-[20px]">{{ username }}</span>

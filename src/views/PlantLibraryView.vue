@@ -65,12 +65,13 @@ const setInputEmpty = () =>{
         <div id="plantcontent" class="mt-[100px] px-[20px] mb-[30px]">
 
             <RouterLink :to="'/garden/addplant/'+flower.id" class="flex flex-col gap-[5px]" v-for="flower in flowers">
-                <div class="flex gap-[5px] py-2 border-b-[1px]">
-                    <img :src="LIBRARY_URL+flower.image" class="aspect-square w-[50px] h-[50px] rounded-full" :alt="flower.name"/>
-                    <div class="flex flex-col">
+                <div class="flex items-center gap-[5px] py-2 border-b-[1px]">
+                    <img :src="LIBRARY_URL+flower.image" class="aspect-square object-cover w-[50px] h-[50px] rounded-full" :alt="flower.name"/>
+                    <span>{{ flower.name }}</span>
+                    <!-- <div class="flex flex-col">
                         <span>{{ flower.name }}</span>
                         <span class="text-[#9D9D9D] text-[12px]">لورم ایپسوم متن ساختگی</span>
-                    </div>
+                    </div> -->
                 </div>
             </RouterLink>
 

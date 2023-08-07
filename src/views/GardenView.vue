@@ -1,17 +1,14 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { onBeforeMount , ref } from 'vue';
+import { ref } from 'vue';
 import serverURL from '../router/serverAddress'
 import AuthService from "../services/auth.service";
-import jMoment from 'jalaali-moment'
 
 const userData =  ref(null)
 const hasData = ref(true)
 const loading = ref (true)
 const init = ref(true)
-onBeforeMount(() => {
-    getData()
-})
+getData()
 
 async function getData() {
     hasData.value = true
@@ -39,40 +36,23 @@ async function getData() {
     })
 }
 
-
 const checkStatus = (status) =>{
-    if(status === "checking"){
-        return "border-blue-500"
-    }
-    if(status === "lost"){
-        return "border-red-500"
-    }
-    if(status === "done"){
+    status === "done" ? true : false
+    if(status){
         return "border-black"
     }
-    if(status === "under_care"){
-        return "border-orange-500"
-    }
     else{
-        return ""
+        return "border-blue-500"
     }
 }
 
 const checkStatusValue = (status) =>{
-    if(status === "checking"){
-        return "در حال بررسی"
-    }
-    if(status === "lost"){
-        return "از بین رفته"
-    }
-    if(status === "done"){
+    status === "done" ? true : false
+    if(status){
         return "تحویل داده"
     }
-    if(status === "under_care"){
-        return "در حال درمان"
-    }
     else{
-        return "نامعلوم"
+        return "در حال بررسی"
     }
 }
 
@@ -262,7 +242,7 @@ const deletePlant = async (id) => {
                     <!-- 4 latest plant for prescription -->
                     <div v-if="hasData && userData" class="max-w-[360px] flex flex-wrap justify-around gap-2.5">
                         <RouterLink class="relative" :to="'/prescription/'+flower._id" v-for="(flower,index) in userData.slice().reverse()" :key="flower._id">
-                            <img v-if="index < 4" :src="flower.fileName" class="object-cover aspect-square w-[150px] h-[150px] overflow-hidden rounded-full p-[1px] bg-white shadow-md" alt="picture" />
+                            <img v-if="index < 4" :src="flower.fileName" loading="lazy" class="object-cover aspect-square w-[150px] h-[150px] overflow-hidden rounded-full p-[1px] bg-white shadow-md" alt="picture" />
                             <div v-if="index < 4" class="border-[2px] bg-white w-fit rounded-full p-1 absolute bottom-1 right-7" :class="checkStatus(flower.status)"></div>
                         </RouterLink>
                     </div>
@@ -309,7 +289,7 @@ const deletePlant = async (id) => {
                         <div class="flex flex-col gap-[10px]" v-for="flower in userData">
                             <div class="flex justify-between items-center gap-[5px] shadow-[0_0_4px_0_#c9c9c9] px-[10px] p-1 rounded-md">
                                 <RouterLink :to="'/prescription/'+flower._id" class="flex gap-[5px] w-1/2">
-                                    <img :src="flower.fileName" class="aspect-square object-cover w-[50px] h-[50px] rounded-full" alt="" />
+                                    <img :src="flower.fileName" loading="lazy" class="aspect-square object-cover w-[50px] h-[50px] rounded-full" alt="" />
                                     <div class="flex flex-col">
                                         <span>{{ flower.name }}</span>
                                         <span class="text-[12px]">{{ flower.createdAt.split("T")[0] }}</span>

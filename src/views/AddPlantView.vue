@@ -413,10 +413,10 @@ async function savePlantData() {
 </script>
 
 <template>
-    <div class="h-[90svh] w-full relative overflow-y-auto">
-        <div class="flex flex-col justify-center max-w-[400px] mb-[50px]">
-            <img :src="LIBRARY_URL+'left.avif'" class="fixed -top-5 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
-            <img :src="LIBRARY_URL+'right.avif'" class="fixed top-0 left-0 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
+    <div class="w-full relative">
+        <img :src="LIBRARY_URL+'left.avif'" class="absolute -top-5 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
+        <img :src="LIBRARY_URL+'right.avif'" class="absolute top-0 left-0 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
+        <div class="h-[90svh] flex flex-col overflow-y-auto">
     
             <!-- navigation -->
             <div class="flex flex-col items-center justify-center mt-[30px]">
@@ -1161,7 +1161,7 @@ async function savePlantData() {
             </div>
             
             <!-- buttons -->
-            <div class="flex justify-center items-center">
+            <div class="flex justify-center items-center mb-10">
                 <button v-if="stage == 1" @click="saveForm" class="text-white bg-[#49B779] font-semibold rounded-md max-w-[200px] w-full px-2 p-1 shadow-[0_4px_4px_0_#c9c9c9]">
                     مرحله بعدی
                 </button>
@@ -1178,8 +1178,8 @@ async function savePlantData() {
                 </div>
             </div>
     
-            <img :src="LIBRARY_URL+'bottom.avif'" class="fixed bottom-10 left-0 max-w-[100px] -z-10 opacity-40">
         </div>
+        <img :src="LIBRARY_URL+'bottom.avif'" class="absolute left-0 bottom-0 max-w-[100px] -z-10 opacity-40">
     </div>
 
     <div v-if="finishProcess" class="absolute top-0 left-0 w-full bg-[#fffe]">

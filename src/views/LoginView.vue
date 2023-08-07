@@ -3,9 +3,10 @@ import { computed , onMounted , ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import router from '../router';
 import store from '../store';
-import serverURL from '../router/serverAddress'
+import leftSvg from '../components/leftSvg.vue'
+import rightSvg from '../components/rightSvg.vue'
+import logo from '../components/logo2svg.vue';
 
-const LIBRARY_URL = serverURL + "/library/images/";
 const user = { username: '', phone: '' }
 const phoneError = ref(false)
 const phoneIsEmpty = ref(true)
@@ -68,17 +69,15 @@ const authorizeInput = () => {
 
 <template>
   <div class="max-w-[400px] w-full relative">
-    <img :src="LIBRARY_URL+'left.avif'" class="absolute -top-10 left-0 max-w-[100px] opacity-40">
-    <img :src="LIBRARY_URL+'right.avif'" class="absolute top-0 right-0 max-w-[100px] opacity-40">
+    <leftSvg class="absolute -top-10 left-0 max-w-[100px] opacity-40"></leftSvg>
+    <rightSvg class="absolute top-0 right-0 max-w-[100px] opacity-40"></rightSvg>
   </div>
   <div class="flex flex-col justify-center items-center h-[90svh]" @change="authorizeInput">
     <div class="max-w-[400px] w-full flex flex-col gap-2 p-2">
       
 
-      <div class="text-center flex flex-col">
-        <div>
-          <img :src="LIBRARY_URL+'logo-2.avif'" alt="logo" class="scale-[60%]">
-        </div>
+      <div class="text-center flex flex-col justify-center">
+        <logo></logo>
         <div class=" flex flex-col">
           <span class="text-[40px] text-[#49B779] font-bold">ورود</span>
           <span class="text-[20px]">به بلوم خوش اومدی! </span>

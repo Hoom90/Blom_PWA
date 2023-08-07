@@ -1,23 +1,11 @@
 <script setup>
-import { RouterView, RouterLink } from 'vue-router'
-import { computed , ref } from 'vue'
-
-const currentUser = computed(() => {
-    return localStorage.getItem('userId');
-});
-const isAuthenticated = computed(() => {
-    return !!currentUser.value; // Check if currentUser has a value
-});
-
-const isActive = ref(false)
-
+import { RouterView, RouterLink } from 'vue-router';
 </script>
 <template>
     <!-- mobile -->
     <div class="max-w-[400px] mx-auto">
-
         <!-- navigation -->
-        <div class="fixed z-10 bottom-0 items-center justify-center flex max-w-[400px] w-full" v-if="isAuthenticated">
+        <div class="fixed z-10 bottom-0 items-center justify-center flex max-w-[400px] w-full">
             <div
                 class="flex w-4/5 justify-center shadow-[0_-1px_3px_0_#f6f6f6] rounded-[30px_10px_0_0] p-2 h-full bg-white">
                 <!-- home -->
@@ -102,14 +90,15 @@ const isActive = ref(false)
                                     fill="currentcolor" />
                             </svg>
                         </span>
-                    <span fill="currentcolor">بیشتر</span>
-                </RouterLink>
+                        <span fill="currentcolor">بیشتر</span>
+                    </RouterLink>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- content -->
-    <div class="min-w-[300px] max-w-[500px] mx-auto">
-        <RouterView />
+        <!-- content -->
+        <div class="min-w-[300px] max-w-[500px] mx-auto">
+            <RouterView />
+        </div>
     </div>
-</div></template>
+</template>

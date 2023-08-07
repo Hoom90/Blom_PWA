@@ -7,12 +7,20 @@ export default defineConfig({
     vue(),
     VitePWA({
       manifest: {
+        name: "Blom",
+        short_name: "بلوم",
+        description:
+          "Blom is application which you can send your plant detail to understand what is wrong or what happend to your plant and get medical prescription to cure.",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#49b779",
+        orientation: "portrait-primary",
+        start_url: "/",
         icons: [
           {
-            src: "https://blom.iran.liara.run/library/images/icon.png",
+            src: "https://blom-server.iran.liara.run/library/images/icon.avif",
             sizes: "512x512",
             type: "image/png",
-            prupose: "any maskable",
           },
         ],
       },
@@ -22,7 +30,7 @@ export default defineConfig({
             urlPattern: ({ url }) => {
               return url.pathname.startsWith("/api");
             },
-            handler: "CacheFirst",
+            handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
               cacheableResponse: {

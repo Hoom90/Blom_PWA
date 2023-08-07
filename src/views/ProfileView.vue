@@ -140,7 +140,7 @@ const setNewUsername = () => {
         <button class="relative max-w-[100px] max-h-[100px] w-full h-full border border-[#49b779] rounded-full p-1 outline-none" disabled>
           <div class="max-w-[100px] max-h-[100px] mx-auto" @click="openFileInput">
             <img v-if="hasImage" :src="userData.image" class="aspect-square w-[100px] rounded-full">
-            <img v-else :src="serverURL + '/library/images/icon.png'" class="aspect-square w-[100px] rounded-full">
+            <img v-else :src="serverURL + '/library/images/icon.avif'" class="aspect-square w-[100px] rounded-full">
             <div class="hidden">
               <input type="file" @input="setNewImage"/>
             </div>

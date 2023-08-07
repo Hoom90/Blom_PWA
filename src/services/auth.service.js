@@ -81,7 +81,7 @@ class AuthService {
     return await fetch(API_URL + "refresh-token", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + refreshToken,
+        Authorization: "Bearer " + refreshToken,
         "Content-Type": "application/json",
       },
     })

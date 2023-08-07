@@ -137,10 +137,10 @@ async function getData() {
                         </div>
                         <div class="flex gap-[10px]">
                             <div class="flex gap-[10px] max-w-[40px]">
-                                <img src="../assets/610dff.png" alt="">
+                                <img src="" alt="">
                             </div>
                             <div class="flex gap-[10px] max-w-[40px]">
-                                <img src="../assets/610dff.png" alt="">
+                                <img src="" alt="">
                             </div>
                         </div>
                     </div>
