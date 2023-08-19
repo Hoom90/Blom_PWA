@@ -1,15 +1,19 @@
 <script setup>
-import { ref, onBeforeMount , onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useRouter,RouterLink } from 'vue-router';
 import flowers from '../flowerLibrary.json'
 import AuthService from "../services/auth.service";
 import serverURL from '../router/serverAddress'
-
-const LIBRARY_URL = serverURL + "/library/images/";
-const API_URL = serverURL + "/api/";
+import plantStatuses from '../status.json'
+import store from '../store';
+import router from '../router';
+import leftSvg from '../components/leftSvg.vue'
+import rightSvg from '../components/rightSvg.vue'
 
 const route = useRouter()
 const {id} = route.currentRoute.value.params
+const LIBRARY_URL = serverURL + "/library/images/";
+const API_URL = serverURL + "/api/";
 
 const userData = ref('')
 
@@ -18,9 +22,6 @@ const stage = ref(1)
 const flower = ref(null)
 const tempRange = ref(null)
 const tempSelect = ref(null)
-const day = ref(0)
-const month= ref(0)
-const year = ref(1402)
 const directLight = ref(null)
 const semiLight = ref(null)
 const shadow = ref(null)
@@ -41,53 +42,63 @@ const sickNumberTypeName = ref("هفته")
 const sickNumber = ref(1)
 const dusting = ref(1)
 
-
-const Image = ref(null)
-const filename = ref(null)
-const file = ref(null)
-const Temp = ref(null)
-const light = ref(null)
-const soil = ref(null)
-const water = ref(null)
-const symptom = ref(null)
-
 const compeleteInfo = ref(false)
 const finishProcess = ref(false)
 
-const ImageError = ref (false)
-const LightError = ref (false)
-const TempError = ref (false)
-const SoilError = ref (false)
-const WaterError = ref (false)
-const SymptomError = ref(false)
 const stageTwoError = ref(false)
 
 onBeforeMount(() => {
     flower.value =  flowers.find(f => f.id === parseInt(id))
-    Image.value = LIBRARY_URL+flower.value.image
-    water.value = 0
 })
 
 // file input
-const openFileInput = () =>{
-    const imageInput = document.querySelector('input[type=file]')
+const openFileInput0 = () =>{
+    const imageInput = document.querySelector('input[name=fileInput0]')
+    imageInput.click()
+}
+const openFileInput1 = () =>{
+    const imageInput = document.querySelector('input[name=fileInput1]')
+    imageInput.click()
+}
+const openFileInput2 = () =>{
+    const imageInput = document.querySelector('input[name=fileInput2]')
     imageInput.click()
 }
 
+const userImages = ref([])
+const filename = ref([])
+const file = ref([])
+const ImageError = ref (false)
 // set image data
-const setNewImage = (e) =>{
-    let reader = new FileReader
-    reader.onload = e => {
-        Image.value = e.target.result
+const setNewImage = (e) => {
+    if (userImages.value.length >= 3) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        userImages.value.push(event.target.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+
+    // Get file name and file itself to send to the database
+    const selectedFile = e.target.files[0];
+    file.value.push(selectedFile);
+    // save old file name
+    filename.value.push(selectedFile.name);
+
+    // Prompt the user to enter a new file name
+    // const newFileName = "user_"+ localStorage.getItem('userId') +"_"+ Date.now();
+    // if (newFileName) {
+    //     // Change the file name of the selected file
+    //     e.target.files[0].name  = newFileName;
+    //     filename.value.push(newFileName);
+    // }
+
+    if (file.value.length > 2) {
+        ImageError.value = false;
     }
-    reader.readAsDataURL(e.target.files[0])
-
-    //get file name and file it self to sent to database
-    file.value = e.target.files[0]
-    filename.value = e.target.files[0].name
-    ImageError.value = false
-}
-
+};
+const light = ref(null)
+const LightError = ref (false)
 // set light data
 const setLight = (number) => {
     if(number === 1){
@@ -131,6 +142,8 @@ const setLight = (number) => {
     }
 };
 
+const Temp = ref(null)
+const TempError = ref (false)
 // set temprature data
 const setTemp = (e) =>{
   if(e.target.value == 4){
@@ -151,35 +164,201 @@ const setTemp = (e) =>{
     }
     TempError.value=false
   }
-  userData.value += {'temp':Temp.value}
 }
 const setTempRange = (e) =>{
   Temp.value = e.target.value
-  userData.value += {'temp':Temp.value}
 }
 
+const soil = ref(null)
+const SoilError = ref (false)
 // set soil  data
-const setSoil = () =>{
-    soil.value = year.value +"-"+ month.value +"-"+ day.value 
-    if(day.value != 0 && month.value != 0){
-        SoilError.value = false
-        userData.value+={'soil':soil.value}
+const setSoil = (number) =>{
+    if(number === 1){
+        soil.value = "خشک"
     }
+    if(number === 2){
+        soil.value = "نیمه خشک"
+    }
+    if(number === 3){
+        soil.value = "مرطوب"
+    }
+    if(number === 4){
+        soil.value = "خیس"
+    }
+    SoilError.value = false
+    userData.value+={'soil':soil.value}
 }
 
-// set  water data
-const setWater = () =>{
-    if(water.value != 0){
-        WaterError.value = false
-        userData.value+={'water':water.value}
+const symptoms = ref([])
+const symptomsError = ref(false)
+const selected = ref(
+    [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ])
+// set symptoms  data
+const setSymptoms = (number) =>{
+    const button = document.querySelector('button[name=symptoms'+number+']')
+    if (number === 0) {
+        if (selected.value[0]) {
+            symptoms.value = symptoms.value.filter(item => item !== "عدم رشد گیاه")
+            selected.value[0] = false;
+            button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        } else {
+            symptoms.value.push("عدم رشد گیاه");
+            selected.value[0] = true;
+            button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+
+        }
     }
+    if(number === 1){
+        if(selected.value[1]){
+            symptoms.value = symptoms.value.filter(item => item !== "شوره در سطح خاک")
+            selected.value[1] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("شوره در سطح خاک")
+            selected.value[1] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+
+        }
+    }
+    if(number === 2){
+        if(selected.value[2]){
+            symptoms.value = symptoms.value.filter(item => item !== "سفتی خاک")
+            selected.value[2] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("سفتی خاک")
+            selected.value[2] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+
+        }
+    }
+    if(number === 3){
+        if(selected.value[3]){
+            symptoms.value = symptoms.value.filter(item => item !== "پوسیدگی ساقه")
+            selected.value[3] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("پوسیدگی ساقه")
+            selected.value[3] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    if(number === 4){
+        if(selected.value[4]){
+            symptoms.value = symptoms.value.filter(item => item !== "پوسیدگی ریشه")
+            selected.value[4] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("پوسیدگی ریشه")
+            selected.value[4] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    if(number === 5){
+        if(selected.value[5]){
+            symptoms.value = symptoms.value.filter(item => item !== "ریزش برگ ها")
+            selected.value[5] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("ریزش برگ ها")
+            selected.value[5] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    if(number === 6){
+        if(selected.value[6]){
+            symptoms.value = symptoms.value.filter(item => item !== "قهوه ای شدن برگ ها")
+            selected.value[6] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("قهوه ای شدن برگ ها")
+            selected.value[6] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    if(number === 7){
+        if(selected.value[7]){
+            symptoms.value = symptoms.value.filter(item => item !== "زرد شدن برگ ها")
+            selected.value[7] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("زرد شدن برگ ها")
+            selected.value[7] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    if(number === 8){
+        if(selected.value[8]){
+            symptoms.value = symptoms.value.filter(item => item !== "سوختگی برگ ها")
+            selected.value[8] = false
+                        button.classList.remove("border-[#49b779]");
+            button.classList.remove("bg-[#49b77933]");
+            button.classList.replace("text-[#49b779]","text-[#adadad]");
+        }
+        else{
+            symptoms.value.push("سوختگی برگ ها")
+            selected.value[8] = true
+           button.classList.add("border-[#49b779]");
+            button.classList.add("bg-[#49b77933]");
+            button.classList.replace("text-[#adadad]","text-[#49b779]");
+        }
+    }
+    symptomsError.value = false
 }
 
-const setSymptom = () =>{
-    if(symptom.value != ''){
-        SymptomError.value = false
-        userData.value+={'symptom':symptom.value}
-    }
+const description = ref(null)
+// set description data
+const setDescription = () =>{
+    userData.value+={'description':description.value}
 }
 
 const setWaterGlass = (number) =>{
@@ -197,55 +376,6 @@ const setWaterGlass = (number) =>{
         twoGlass.value.classList.add('border-[#49b779]')
         halfGlass.value.classList.remove('border-[#49b779]')
         oneGlass.value.classList.remove('border-[#49b779]')
-    }
-}
-
-const incrementWater = () =>{
-    if(water.value < 100){
-        water.value++
-    }
-}
-
-const decrementWater = () =>{
-    if(water.value > 1){
-        water.value--
-    }
-}
-
-const incrementDay = () =>{
-    if(day.value < 31){
-        day.value++
-    }
-}
-
-const decrementDay = () =>{
-    if(day.value > 1){
-        day.value--
-    }
-}
-
-const incrementMonth = () =>{
-    if(month.value < 12){
-        month.value++
-    }
-}
-
-const decrementMonth = ()=>{
-    if(month.value > 1){
-        month.value--
-    }
-}
-
-const incrementYear = () =>{
-    const currentYear = new Date().getFullYear();
-    if(year.value < currentYear){
-        year.value++
-    }
-}
-
-const decrementYear =() =>{
-    if(year.value > 0){
-        year.value--
     }
 }
 
@@ -320,10 +450,15 @@ const setInformation = () =>{
 
 const saveForm = () =>{
     if(stage.value == 1){
-        if(Image.value == LIBRARY_URL+flower.value.image){
+        if(userImages.value === []){
             ImageError.value = true
             return
         }
+        if(userImages.value.length < 2){
+            ImageError.value = true
+            return
+        }
+        ImageError.value = false
     }
     if(stage.value == 2){
         if(light.value == null){
@@ -334,19 +469,15 @@ const saveForm = () =>{
             TempError.value = true
             stageTwoError.value = true
         }
-        if(day.value == 0 || month.value == 0){
+        if(soil.value == null){
             SoilError.value = true
             stageTwoError.value = true
         }
-        if(water.value == 0){
-            WaterError.value = true
+        if(symptoms.value.length < 1){
+            symptoms.value = true
             stageTwoError.value = true
         }
-        if(symptom.value == null || symptom.value == ''){
-            SymptomError.value = true
-            stageTwoError.value = true
-        }
-        if(!SymptomError.value && !WaterError.value && !SoilError.value && !LightError.value){
+        if(!symptomsError.value && !SoilError.value && !LightError.value && !TempError.value){
             stageTwoError.value = false
         }
         if(stageTwoError.value)return
@@ -358,20 +489,30 @@ const saveForm = () =>{
     }
 }
 
+const logout = () =>{
+  store.dispatch('auth/logout')
+  router.push('/login');
+}
+
 async function savePlantData() {
   await AuthService.generateNewToken()
   const token = localStorage.getItem('token')
   const formData = new FormData()
   formData.append('userId', localStorage.getItem('userId'))
   formData.append('name', flower.value.name)
-  formData.append('water',  water.value)
   formData.append('light',  light.value)
+  formData.append('temp',  Temp.value)
   formData.append('soil',  soil.value)
-  formData.append('Temp',  Temp.value)
-  formData.append('symptom',  symptom.value)
+  formData.append('symptom',  symptoms.value)
+  formData.append('description',  description.value)
   formData.append('fileName',filename.value)
-  formData.append('file',file.value)  
-//   console.log(formData)
+  formData.append('files',file.value[0])
+  formData.append('files',file.value[1])
+  formData.append('files',file.value[2])
+//   for (let [key, value] of formData) {
+//   console.log(key, value);
+//     }
+    console.log(...formData)
   await fetch(API_URL + "flowers", {
     method: "POST",
     body: formData,
@@ -387,36 +528,16 @@ async function savePlantData() {
     .then((data) => data);
 }
 
-// import swiper from 'vue-awesome-swiper';
-// import swiperSlide from 'vue-awesome-swiper';
-// import 'swiper/swiper-bundle.css';
-
-// const slider = ref(null)
-
-// const interleaveOffset = 0.75;
-
-// const sw = swiper(slider, {
-//   loop: false,
-//   direction: "vertical",
-//   speed: 100,
-//   grabCursor: true,
-//   mousewheelControl: true,
-//   mousewheel: true,
-//   slidesPerView: 5,
-//   freeMode: true,
-//   freeModeMomentum: true,
-//   freeModeSticky: true,
-//   centeredSlides: true,
-// });
-
 
 </script>
 
 <template>
-    <div class="w-full relative">
-        <img :src="LIBRARY_URL+'left.avif'" class="absolute -top-5 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
-        <img :src="LIBRARY_URL+'right.avif'" class="absolute top-0 left-0 transform -scale-x-100 max-w-[100px] -z-10 opacity-40">
-        <div class="h-[90svh] flex flex-col overflow-y-auto">
+    <div class="max-w-[400px] w-full relative">
+        <leftSvg class="absolute -top-10 transform -scale-x-100 opacity-40"></leftSvg>
+        <rightSvg class="absolute top-0 left-0 transform -scale-x-100 opacity-40"></rightSvg>
+    </div>
+    <div class="h-[100svh] w-full relative overflow-y-auto">
+        <div class="flex flex-col justify-center max-w-[400px] w-full mb-[50px]">
     
             <!-- navigation -->
             <div class="flex flex-col items-center justify-center mt-[30px]">
@@ -429,38 +550,81 @@ async function savePlantData() {
                     <div class="w-[30px] h-[1px] bg-[#adadad]"></div>
                     <div class="w-[25px] h-[25px] flex items-center justify-center bg-[#49b779] rounded-full text-white">1</div>
                 </div>
-                <span v-if="stage == 1" class="text-[20px]">تصویر گیاه خود را آپلود کنید! </span>
+                <div v-if="stage == 1" class="text-[20px] mx-auto text-center">تصویر گیاه <br/>{{ flower.name }}<br/> خود را آپلود کنید! </div>
                 <span v-if="stage == 2" class="text-[20px]">سوالات زیر را تکمیل کنید </span>
             </div>
 
             <!-- stage 1 -->
             <div v-if="stage == 1" class="max-w-[400px] w-full flex flex-col gap-2 p-[20px]">
     
-                <div class="max-w-[200px] mx-auto" @click="openFileInput">
-                    <div class="relative flex justify-center p-[5px] items-center shadow-md cursor-pointer rounded-full">
-                        <img v-if="Image" :src="Image" class="object-cover aspect-square w-[200px] rounded-full bg-white">
-                        <i class="absolute bottom-4 right-4 w-[30px] h-[30px] flex justify-center items-center rounded-full shadow-md bg-white">
-                            <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </i>
-                    </div>
-                    <div class="hidden">
-                        <input ref="fileInput" type="file" @input="setNewImage"/>
+                <div class='flex gap-3 mx-auto'>
+                    <div class="max-w-[100px]" @click="openFileInput0">
+                        <div class="relative flex justify-center p-[5px] items-center shadow-md cursor-pointer rounded">
+                            <img v-if="userImages[0]" :src="userImages[0]" class="object-cover aspect-square w-[200px] rounded bg-white">
+                            <div v-else class="aspect-square w-[200px] rounded bg-white flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <!-- <i v-if="userImages[0]" class="absolute -bottom-2 -right-2 w-[30px] h-[30px] flex justify-center items-center rounded-full shadow-md bg-white">
+                                <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </i> -->
+                        </div>
+                        <div class="hidden">
+                            <input ref="fileInput" name="fileInput0" type="file" @input="setNewImage"/>
+                        </div>
                     </div>
 
-                    <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="ImageError">
-                        <i fill="currentcolor">
-                            <svg width="10" height="10" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10.1235 0C4.53531 0 0 4.48 0 10C0 15.52 4.53531 20 10.1235 20C15.7116 20 20.2469 15.52 20.2469 10C20.2469 4.48 15.7116 0 10.1235 0ZM11.1358 15H9.11111V9H11.1358V15ZM11.1358 7H9.11111V5H11.1358V7Z"
-                                fill="currentcolor" />
-                            </svg>
-                        </i>
-                        <span class="text-[12px]">وارد کردن عکس گیاه الزامی است</span>
+                    <div class="max-w-[100px]" @click="openFileInput1">
+                        <div class="relative flex justify-center p-[5px] items-center shadow-md cursor-pointer rounded">
+                            <img v-if="userImages[1]" :src="userImages[1]" class="object-cover aspect-square w-[200px] rounded bg-white">
+                            <div v-else class="aspect-square w-[200px] rounded bg-white flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <!-- <i v-if="userImages[1]" class="absolute -bottom-2 -right-2 w-[30px] h-[30px] flex justify-center items-center rounded-full shadow-md bg-white">
+                                <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </i> -->
+                        </div>
+                        <div class="hidden">
+                            <input ref="fileInput" name="fileInput1" type="file" @input="setNewImage"/>
+                        </div>
+                    </div>
+
+                    <div class="max-w-[100px]" @click="openFileInput2">
+                        <div class="relative flex justify-center p-[5px] items-center shadow-md cursor-pointer rounded">
+                            <img v-if="userImages[2]" :src="userImages[2]" class="object-cover aspect-square w-[200px] rounded bg-white">
+                            <div v-else class="aspect-square w-[200px] rounded bg-white flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <!-- <i v-if="userImages[2]" class="absolute -bottom-2 -right-2 w-[30px] h-[30px] flex justify-center items-center rounded-full shadow-md bg-white">
+                                <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2965 2.61541L14.2107 6.14941M1 14.5427H4.9143L15.1893 5.26591C15.7084 4.79727 16 4.16167 16 3.49891C16 2.83616 15.7084 2.20055 15.1893 1.73191C14.6703 1.26328 13.9662 1 13.2322 1C12.4981 1 11.7941 1.26328 11.275 1.73191L1 11.0087V14.5427Z" stroke="#49B779" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </i> -->
+                        </div>
+                        <div class="hidden">
+                            <input ref="fileInput" name="fileInput2" type="file" @input="setNewImage"/>
+                        </div>
                     </div>
                 </div>
-    
+                <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="ImageError">
+                    <i fill="currentcolor">
+                        <svg width="10" height="10" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.1235 0C4.53531 0 0 4.48 0 10C0 15.52 4.53531 20 10.1235 20C15.7116 20 20.2469 15.52 20.2469 10C20.2469 4.48 15.7116 0 10.1235 0ZM11.1358 15H9.11111V9H11.1358V15ZM11.1358 7H9.11111V5H11.1358V7Z"
+                            fill="currentcolor" />
+                        </svg>
+                    </i>
+                    <span class="text-[12px]">وارد کردن عکس گیاه الزامی است</span>
+                </div>
             </div>
     
             <!-- stage 2 -->
@@ -625,7 +789,7 @@ async function savePlantData() {
                     </div>
 
                     <!-- soil -->
-                    <div class="shadow-[0_4px_10px_0_#c9c9c9] rounded-md w-full p-[15px] bg-white" @click="setSoil">
+                    <div class="shadow-[0_4px_10px_0_#c9c9c9] rounded-md w-full p-[15px] bg-white">
                         <div class="flex gap-[5px] items-center mg-[10px] mb-[5px]">
                             <i class="text-[#695843]">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -658,50 +822,13 @@ async function savePlantData() {
     
                                     </svg>
                             </i>
-                            <span>
-                                تاریخ تعویض خاک
-                            </span>
+                            <span>وضعیت سطح خاک هنگام آبیاری</span>
                         </div>
-                        <div class="flex">
-                            <div class="w-1/3 flex flex-col justify-center items-center">
-                                <button @click="incrementDay" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 1393.854 92.168 92.299 867.767-867.636 867.636 867.636 92.429-92.299L960.088 433.92z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                                <input type="text" id="day" class="w-full bg-transparent text-center" v-model="day" disabled/>
-                                <button @click="decrementDay" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 526.146 92.168-92.299 867.767 867.636 867.636-867.636 92.429 92.299-960.065 959.935z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                            </div>
-                            <div class="w-1/3 flex flex-col justify-center items-center">
-                                <button @click="incrementMonth" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 1393.854 92.168 92.299 867.767-867.636 867.636 867.636 92.429-92.299L960.088 433.92z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                                <input type="text" id="month" class="w-full bg-transparent text-center" v-model="month" disabled/>
-                                <button @click="decrementMonth" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 526.146 92.168-92.299 867.767 867.636 867.636-867.636 92.429 92.299-960.065 959.935z" fill-rule="evenodd"/>
-                                    </svg>  
-                                </button>
-                            </div>
-                            <div class="w-1/3 flex flex-col justify-center items-center">
-                                <button @click="incrementYear" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 1393.854 92.168 92.299 867.767-867.636 867.636 867.636 92.429-92.299L960.088 433.92z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                                <input type="text" id="year" class="w-full bg-transparent text-center" v-model="year" disabled/>
-                                <button @click="decrementYear" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 526.146 92.168-92.299 867.767 867.636 867.636-867.636 92.429 92.299-960.065 959.935z" fill-rule="evenodd"/>
-                                    </svg>  
-                                </button>
-                            </div>
+                        <div class="flex justify-between text-[12px]">
+                            <div><input type='radio' name="soilStatus" @click="setSoil(1)"/>خشک</div>
+                            <div><input type='radio' name="soilStatus" @click="setSoil(2)"/>نیمه خشک</div>
+                            <div><input type='radio' name="soilStatus" @click="setSoil(3)"/>مرطوب</div>
+                            <div><input type='radio' name="soilStatus" @click="setSoil(4)"/>خیس</div>
                         </div>
                         <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="SoilError">
                             <i fill="currentcolor">
@@ -711,12 +838,12 @@ async function savePlantData() {
                                     fill="currentcolor" />
                                 </svg>
                             </i>
-                            <span class="text-[12px]">وارد کردن تاریخ تعویض الزامی است</span>
+                            <span class="text-[12px]">وارد کردن وضعیت سطح خاک هنگام آبیاری الزامی است</span>
                         </div>
                     </div>
 
-                    <!-- water -->
-                    <div class="shadow-[0_4px_10px_0_#c9c9c9] rounded-md w-full p-[15px] bg-white" @click="setWater">
+                    <!-- symptom -->
+                    <div class="shadow-[0_4px_10px_0_#c9c9c9] rounded-md w-full p-[15px] bg-white">
                         <div class="flex gap-[5px] items-center mg-[10px] mb-[5px]">
                             <i class="text-[#63B89D]">
                                 <svg fill="currentcolor" width="15" height="15" viewBox="-1.82 0 15.99 15.99"
@@ -730,28 +857,13 @@ async function savePlantData() {
                                     </g>
                                 </svg>
                             </i>
-                            <span>
-                                آبیاری
-                            </span>
+                            <span>علائم بیماری - <span class="text-[12px]">میتوانید چند مورد را انتخاب نمایید</span></span>
                         </div>
-                        <div class='flex justify-center items-center'>
-                            <span>هر</span>
-                            <div class="flex flex-col justify-center items-center">
-                                <button @click="incrementWater" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 1393.854 92.168 92.299 867.767-867.636 867.636 867.636 92.429-92.299L960.088 433.92z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                                <input type="text" id="day" class="w-[100px] bg-transparent text-center" v-model="water" disabled/>
-                                <button @click="decrementWater" class="bg-[#49b779] text-white px-3 rounded w-[60px] justify-center flex">
-                                    <svg fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="m.153 526.146 92.168-92.299 867.767 867.636 867.636-867.636 92.429 92.299-960.065 959.935z" fill-rule="evenodd"/>
-                                    </svg>        
-                                </button>
-                            </div>
-                            <span>روز یکبار</span>
+                        <div class='grid grid-cols-3 gap-1 justify-center items-center'>
+                            <button v-for="(plantStatus,index) in plantStatuses" @click="setSymptoms(index)" :name="'symptoms'+index" class="col-1 border h-[40px] flex items-center justify-center p-[5px] text-[12px] text-[#adadad] bg-[#f6f6f6] rounded-md">{{plantStatus}}
+                            </button>
                         </div>
-                        <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="WaterError">
+                        <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="plantStatusError">
                             <i fill="currentcolor">
                                 <svg width="10" height="10" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -759,11 +871,11 @@ async function savePlantData() {
                                     fill="currentcolor" />
                                 </svg>
                             </i>
-                            <span class="text-[12px]">وارد کردن آبیاری الزامی است</span>
+                            <span class="text-[12px]">انتخاب حداقل یک مورد از علائم بیماری الزامی است</span>
                         </div>
                     </div>
 
-                    <!-- symptom -->
+                    <!-- description -->
                     <div class="shadow-[0_4px_10px_0_#c9c9c9] rounded-md w-full p-[15px] bg-white">
                         <div class="flex gap-[5px] items-center mg-[10px] mb-[5px]">
                             <i class="text-[#63B89D]">
@@ -771,23 +883,10 @@ async function savePlantData() {
                                 <path d="M15.1875 7.5C15.1875 7.64918 15.2468 7.79226 15.3523 7.89775C15.4577 8.00324 15.6008 8.0625 15.75 8.0625C15.8992 8.0625 16.0423 8.00324 16.1477 7.89775C16.2532 7.79226 16.3125 7.64918 16.3125 7.5H15.1875ZM6.75 17.0625C6.89918 17.0625 7.04226 17.0032 7.14775 16.8977C7.25324 16.7923 7.3125 16.6492 7.3125 16.5C7.3125 16.3508 7.25324 16.2077 7.14775 16.1023C7.04226 15.9968 6.89918 15.9375 6.75 15.9375V17.0625ZM9 16.5L8.45925 16.3455L8.18175 17.3205L9.15675 17.043L9 16.5ZM6.5625 1.5C6.5625 1.35082 6.50324 1.20774 6.39775 1.10225C6.29226 0.996763 6.14918 0.9375 6 0.9375C5.85082 0.9375 5.70774 0.996763 5.60225 1.10225C5.49676 1.20774 5.4375 1.35082 5.4375 1.5H6.5625ZM5.4375 3.75C5.4375 3.89918 5.49676 4.04226 5.60225 4.14775C5.70774 4.25324 5.85082 4.3125 6 4.3125C6.14918 4.3125 6.29226 4.25324 6.39775 4.14775C6.50324 4.04226 6.5625 3.89918 6.5625 3.75H5.4375ZM12.5625 1.5C12.5625 1.35082 12.5032 1.20774 12.3977 1.10225C12.2923 0.996763 12.1492 0.9375 12 0.9375C11.8508 0.9375 11.7077 0.996763 11.6023 1.10225C11.4968 1.20774 11.4375 1.35082 11.4375 1.5H12.5625ZM11.4375 3.75C11.4375 3.89918 11.4968 4.04226 11.6023 4.14775C11.7077 4.25324 11.8508 4.3125 12 4.3125C12.1492 4.3125 12.2923 4.25324 12.3977 4.14775C12.5032 4.04226 12.5625 3.89918 12.5625 3.75H11.4375ZM7.8975 10.1475C7.99686 10.0409 8.05095 9.89983 8.04838 9.75411C8.04581 9.60838 7.98678 9.46934 7.88372 9.36628C7.78066 9.26322 7.64162 9.20419 7.49589 9.20162C7.35017 9.19905 7.20913 9.25314 7.1025 9.3525L7.8975 10.1475ZM6.3525 10.1025C6.25314 10.2091 6.19905 10.3502 6.20162 10.4959C6.20419 10.6416 6.26322 10.7807 6.36628 10.8837C6.46934 10.9868 6.60838 11.0458 6.75411 11.0484C6.89983 11.051 7.04087 10.9969 7.1475 10.8975L6.3525 10.1025ZM5.25 3.1875H12.75V2.0625H5.25V3.1875ZM2.8125 13.5V5.625H1.6875V13.5H2.8125ZM15.1875 5.625V7.5H16.3125V5.625H15.1875ZM6.75 15.9375H5.25V17.0625H6.75V15.9375ZM1.6875 13.5C1.6875 14.4448 2.06283 15.351 2.73093 16.0191C3.39903 16.6872 4.30517 17.0625 5.25 17.0625V15.9375C4.60353 15.9375 3.98355 15.6807 3.52643 15.2236C3.06931 14.7665 2.8125 14.1465 2.8125 13.5H1.6875ZM12.75 3.1875C13.3965 3.1875 14.0165 3.44431 14.4736 3.90143C14.9307 4.35855 15.1875 4.97853 15.1875 5.625H16.3125C16.3125 4.68017 15.9372 3.77403 15.2691 3.10593C14.601 2.43783 13.6948 2.0625 12.75 2.0625V3.1875ZM5.25 2.0625C4.30517 2.0625 3.39903 2.43783 2.73093 3.10593C2.06283 3.77403 1.6875 4.68017 1.6875 5.625H2.8125C2.8125 4.97853 3.06931 4.35855 3.52643 3.90143C3.98355 3.44431 4.60353 3.1875 5.25 3.1875V2.0625ZM14.9843 11.4952L11.223 15.2565L12.0187 16.0522L15.78 12.291L14.9843 11.4952ZM10.2435 14.2762L14.0048 10.515L13.209 9.72L9.44775 13.4813L10.2435 14.2762ZM11.1435 15.3045L8.84775 15.9585L9.156 17.0408L11.4517 16.386L11.1435 15.3045ZM9.543 16.6545L10.1978 14.3588L9.1125 14.0505L8.45775 16.3463L9.543 16.6545ZM9.45 13.4813C9.29189 13.6395 9.17676 13.8354 9.1155 14.0505L10.197 14.3588C10.2057 14.3276 10.2222 14.2992 10.245 14.2762L9.45 13.4813ZM11.2253 15.2565C11.2025 15.2792 11.1744 15.2957 11.1435 15.3045L11.4517 16.386C11.6669 16.3247 11.8628 16.2096 12.021 16.0515L11.2253 15.2565ZM14.9865 10.5157C15.1163 10.6457 15.1892 10.8218 15.1892 11.0055C15.1892 11.1892 15.1163 11.3653 14.9865 11.4952L15.7822 12.291C16.1232 11.9501 16.3147 11.4877 16.3147 11.0055C16.3147 10.5233 16.1232 10.0609 15.7822 9.72L14.9865 10.5157ZM15.78 9.72C15.4391 9.37907 14.9767 9.18754 14.4945 9.18754C14.0123 9.18754 13.5499 9.37907 13.209 9.72L14.0048 10.515C14.1347 10.3852 14.3108 10.3131 14.4945 10.3131C14.6782 10.3131 14.8543 10.386 14.9843 10.5157L15.78 9.72ZM5.4375 1.5V3.75H6.5625V1.5H5.4375ZM11.4375 1.5V3.75H12.5625V1.5H11.4375ZM6.5625 8.25C6.5625 8.89647 6.81931 9.51645 7.27643 9.97357C7.73355 10.4307 8.35353 10.6875 9 10.6875V9.5625C8.6519 9.5625 8.31806 9.42422 8.07192 9.17808C7.82578 8.93194 7.6875 8.5981 7.6875 8.25H6.5625ZM9 10.6875C9.64647 10.6875 10.2665 10.4307 10.7236 9.97357C11.1807 9.51645 11.4375 8.89647 11.4375 8.25H10.3125C10.3125 8.5981 10.1742 8.93194 9.92808 9.17808C9.68194 9.42422 9.3481 9.5625 9 9.5625V10.6875ZM11.4375 8.25C11.4375 7.60353 11.1807 6.98355 10.7236 6.52643C10.2665 6.06931 9.64647 5.8125 9 5.8125V6.9375C9.3481 6.9375 9.68194 7.07578 9.92808 7.32192C10.1742 7.56806 10.3125 7.9019 10.3125 8.25H11.4375ZM9 5.8125C8.35353 5.8125 7.73355 6.06931 7.27643 6.52643C6.81931 6.98355 6.5625 7.60353 6.5625 8.25H7.6875C7.6875 7.9019 7.82578 7.56806 8.07192 7.32192C8.31806 7.07578 8.6519 6.9375 9 6.9375V5.8125ZM7.1025 9.3525L6.3525 10.1025L7.1475 10.8975L7.8975 10.1475L7.1025 9.3525Z" fill="#49B779"/>
                                 </svg>
                             </i>
-                            <span>
-                                علائم بیماری
-                            </span>
+                            <span>توضیحات</span>
                         </div>
                         <div class='flex justify-center items-center'>
-                            <textarea @input="setSymptom" v-model='symptom' cols="30" rows="10" class="outline-none input resize-none" placeholder="علائم بیماری را کامل بنویسید"></textarea>
-                        </div>
-
-                        <div class="flex mt-[10px] gap-1 text-[#AC0202]" v-if="SymptomError">
-                            <i fill="currentcolor">
-                                <svg width="10" height="10" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10.1235 0C4.53531 0 0 4.48 0 10C0 15.52 4.53531 20 10.1235 20C15.7116 20 20.2469 15.52 20.2469 10C20.2469 4.48 15.7116 0 10.1235 0ZM11.1358 15H9.11111V9H11.1358V15ZM11.1358 7H9.11111V5H11.1358V7Z"
-                                    fill="currentcolor" />
-                                </svg>
-                            </i>
-                            <span class="text-[12px]">وارد کردن علائم الزامی است</span>
+                            <textarea @input="setDescription" v-model='description' cols="30" rows="3" class="outline-none input resize-none" placeholder="علائم بیماری را کامل بنویسید"></textarea>
                         </div>
                     </div>
 
@@ -828,7 +927,7 @@ async function savePlantData() {
 
                 <div class="flex flex-col gap-[10px] text-[12px] justify-center items-center">
                     <span class='font-semibold'>اطلاعات دریافتی با دقت<span class='text-[#49b779]'> 80٪</span>راه درمان را ارائه می دهد</span>
-                    <span class="text-[10px]">برای دریافت نسخه درمان  ۱۰۰٪ میتوانیداطلاعات گیاه خود راتکمیل کنید</span>
+                    <!-- <span class="text-[10px]">برای دریافت نسخه درمان  ۱۰۰٪ میتوانیداطلاعات گیاه خود راتکمیل کنید</span> -->
                 </div>
 
                 <div v-if="compeleteInfo" class="shadow-[0_0_5px_0_#c9c9c9] p-[10px] rounded-md flex flex-col gap-[10px] bg-white">
@@ -1161,7 +1260,7 @@ async function savePlantData() {
             </div>
             
             <!-- buttons -->
-            <div class="flex justify-center items-center mb-10">
+            <div class="flex justify-center items-center">
                 <button v-if="stage == 1" @click="saveForm" class="text-white bg-[#49B779] font-semibold rounded-md max-w-[200px] w-full px-2 p-1 shadow-[0_4px_4px_0_#c9c9c9]">
                     مرحله بعدی
                 </button>
@@ -1169,29 +1268,37 @@ async function savePlantData() {
                     ثبت اطلاعات
                 </button>
                 <div v-if="stage == 3" class="flex gap-[10px]">
-                    <button @click="saveForm" to="/garden" class="text-white bg-[#49B779] font-semibold rounded-md p-1 px-3 shadow-[0_4px_4px_0_#c9c9c9]">
+                    <button @click="saveForm" class="text-white bg-[#49B779] font-semibold rounded-md p-1 px-3 shadow-[0_4px_4px_0_#c9c9c9]">
                         دریافت نسخه
                     </button>
-                    <button v-if="!compeleteInfo" @click="setInformation" class="text-[#49b779] p-1 px-3 semibold">
+                    <!-- <button @click="stage == 1" to="/garden" class="text-white bg-[#49B779] font-semibold rounded-md p-1 px-3 shadow-[0_4px_4px_0_#c9c9c9]">
+                        دریافت نسخه
+                    </button> -->
+                    <!-- <button v-if="!compeleteInfo" @click="setInformation" class="text-[#49b779] p-1 px-3 semibold">
                         تکمیل اطلاعات
-                    </button>
+                    </button> -->
                 </div>
             </div>
     
         </div>
-        <img :src="LIBRARY_URL+'bottom.avif'" class="absolute left-0 bottom-0 max-w-[100px] -z-10 opacity-40">
+    </div>
+
+    <div class="max-w-[400px] w-full relative"> 
+        <img :src="LIBRARY_URL+'bottom.avif'" class="absolute bottom-0 left-0 max-w-[100px] -z-10 opacity-40">
     </div>
 
     <div v-if="finishProcess" class="absolute top-0 left-0 w-full bg-[#fffe]">
-        <div class="h-[90vh] flex flex-col gap-[10px] text-blue-500 items-center justify-center px-[20px]">
+        <div class="h-[90vh] flex flex-col gap-[10px] text-[#49b779] items-center justify-center px-[20px]">
         <span class="text-[20px] font-bold">
             نسخه شما پس از بررسی اطلاعات به شما ارسال میگردد
         </span>
-        <RouterLink to="/garden" class="bg-blue-500 rounded text-white text-center w-[100px] px-2 p-1">فهمیدم</RouterLink>
+        <a href="https://blom.land/" class="bg-gray-300 rounded text-white text-center w-[100px] px-2 p-1" disabled>دیدن وضعیت نسخه های من</a>
+        <a href="/garden/plantlibrary" class="bg-[#49b779] rounded text-white text-center w-[100px] px-2 p-1">گیاه دیگر</a>
         </div>
     </div>
 
 </template>
+
 <style>
 .swiper-slide-active {
   z-index: 3;

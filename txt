@@ -103,3 +103,212 @@ garden plant list
                 </div>
             </div>
         </div> -->
+
+
+
+
+
+
+
+
+
+navigation
+                <!-- navigation -->
+        <div class="fixed z-10 bottom-0 items-center justify-center flex max-w-[400px] w-full">
+            <div
+                class="flex w-4/5 justify-center shadow-[0_-1px_3px_0_#f6f6f6] rounded-[30px_10px_0_0] p-2 h-full bg-white">
+                <!-- home -->
+                <div class="flex items-center text-[12px] py-2">
+                    <RouterLink active-class="text-[#49b779]" ref="home" to="/"
+                        class="w-[64px] h-[30px] flex flex-col gap-[5px] justify-center items-center rounded-full text-[#adadad]">
+                        <span fill="currentcolor">
+                            <svg width="20" height="20" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" fill="currentcolor" clip-rule="evenodd"
+                                    d="M16 7.33452V14.3692C16.002 14.844 15.9116 15.3146 15.734 15.754C15.5564 16.1934 15.295 16.5931 14.9648 16.9302C14.6347 17.2674 14.2422 17.5354 13.8097 17.7189C13.3773 17.9025 12.9133 17.998 12.4444 18H3.55557C2.60873 17.996 1.70224 17.6113 1.03547 16.9306C0.3687 16.2499 -0.00375134 15.3289 2.84911e-05 14.3701V7.33452C-0.000365954 6.79743 0.116579 6.26689 0.342482 5.78094C0.568385 5.29499 0.897654 4.86565 1.30669 4.5237L5.75112 0.818229C6.38414 0.289298 7.17927 0 8 0C8.82073 0 9.61586 0.289298 10.2489 0.818229L14.6933 4.5237C15.1023 4.86565 15.4316 5.29499 15.6575 5.78094C15.8834 6.26689 16.0004 6.79743 16 7.33452ZM10.8889 13.7248V15.7499C10.8889 15.9886 10.7952 16.2175 10.6285 16.3863C10.4618 16.5551 10.2357 16.6499 9.99999 16.6499H6.00001C5.76426 16.6499 5.53817 16.5551 5.37147 16.3863C5.20477 16.2175 5.11112 15.9886 5.11112 15.7499V13.7248C5.11112 12.949 5.41548 12.205 5.95725 11.6564C6.49902 11.1079 7.23382 10.7997 8 10.7997C8.76618 10.7997 9.50097 11.1079 10.0427 11.6564C10.5845 12.205 10.8889 12.949 10.8889 13.7248Z" />
+                            </svg>
+                        </span>
+                        <span fill="currentcolor">خانه</span>
+                    </RouterLink>
+                </div>
+                <!-- garden -->
+                <div class="flex items-center text-[12px] py-2">
+                    <RouterLink active-class="text-[#49b778]" ref="garden" to="/garden"
+                        class="w-[64px] h-[30px] flex flex-col gap-[5px] justify-center items-center rounded-full text-[#adadad]">
+                        <span fill="currentcolor">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="currentcolor" d="M4.16803 4.87611C3.44403 4.80811 3.29203 7.09211 3.30403 7.70011C3.33603 9.14811 5.02403 12.0401 4.62803 14.2761C4.61686 14.3357 4.58556 14.3894 4.53955 14.4281C4.49354 14.4668 4.4357 14.4881 4.37603 14.4881H4.20003C4.14024 14.4867 4.08301 14.464 4.03891 14.4243C3.9948 14.3846 3.96679 14.3306 3.96003 14.2721L3.74403 12.2601C3.73777 12.1982 3.71853 12.1382 3.68754 12.0838C3.65656 12.0294 3.6145 11.9818 3.56403 11.9441C-0.423965 9.04411 1.27603 4.19211 4.14403 1.34011C4.17989 1.30495 4.22237 1.27725 4.269 1.2586C4.31563 1.23996 4.36549 1.23074 4.4157 1.23149C4.46592 1.23223 4.51549 1.24292 4.56154 1.26294C4.6076 1.28296 4.64923 1.3119 4.68403 1.34811C7.30003 4.05211 8.38403 8.02411 5.07203 10.7761C5.05552 10.7895 5.03601 10.7987 5.01518 10.8029C4.99435 10.8071 4.97281 10.8062 4.95239 10.8003C4.93197 10.7945 4.91327 10.7837 4.89789 10.7691C4.88251 10.7544 4.87089 10.7362 4.86403 10.7161C4.44003 9.41211 3.97603 7.98011 4.24403 6.58811C4.33737 6.10011 4.3827 5.60678 4.38003 5.10811C4.37935 5.05015 4.35737 4.99448 4.31827 4.95169C4.27917 4.9089 4.22569 4.882 4.16803 4.87611Z" />
+                                <path fill="currentcolor" d="M14.788 11.416C9.82803 11.22 6.81203 13.76 4.24803 17.596C4.23033 17.6225 4.20755 17.6452 4.18101 17.6628C4.15447 17.6803 4.1247 17.6924 4.09343 17.6984C4.06216 17.7044 4.03002 17.704 3.99887 17.6974C3.96773 17.6909 3.93821 17.6781 3.91203 17.66L3.68003 17.496C3.61966 17.4524 3.57912 17.3864 3.56715 17.3123C3.55518 17.2382 3.57273 17.162 3.61603 17.1L5.31203 14.732C5.39199 14.6239 5.42904 14.4899 5.41603 14.356C5.00003 9.24804 9.72003 7.12004 14.028 8.45204C15.8467 9.01471 17.4014 9.97871 18.692 11.344C18.7317 11.3871 18.757 11.4415 18.7641 11.4996C18.7713 11.5577 18.7601 11.6166 18.732 11.668C16.272 16.208 11.34 18.54 6.56403 16.212C6.52678 16.1933 6.49426 16.1663 6.46897 16.1332C6.44368 16.1001 6.4263 16.0618 6.41818 16.0212C6.41006 15.9806 6.41142 15.9388 6.42214 15.8991C6.43286 15.8594 6.45267 15.8227 6.48003 15.792C8.65069 13.32 11.4227 12.1227 14.796 12.2C14.8458 12.2012 14.8952 12.1907 14.9402 12.1693C14.9852 12.148 15.0246 12.1165 15.0553 12.0773C15.086 12.038 15.1071 11.9922 15.117 11.9434C15.1268 11.8945 15.1251 11.8441 15.112 11.796L15.072 11.644C15.0557 11.5805 15.0191 11.5239 14.9679 11.4828C14.9168 11.4417 14.8536 11.4183 14.788 11.416Z" />
+                            </svg>
+                        </span>
+                        <span fill="currentcolor">گلخانه من</span>
+                    </RouterLink>
+                </div>
+            </div>
+            <div class="w-1/5 min-w-[39px] min-h-[60px] relative">
+                <RouterLink to="/garden/plantLibrary" class="">
+                    <div class="absolute -top-[15px] -left-1.5 rounded-full bg-[#49b779] z-10 w-[50px] h-[50px]">
+                        <i class="flex justify-center items-center w-full h-full">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="28px"
+                                viewBox="0 0 30 28" enable-background="new 0 0 30 28" xml:space="preserve">
+                                <image id="image0" width="30" height="28" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAcCAQAAADc8cciAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+                            AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZ
+                            cwAACxMAAAsTAQCanBgAAAAHdElNRQfnBxgKIiBxU8HEAAABy0lEQVQ4y6WTP2hTURSHv9tWin+G
+                            CrFoCaTQQUSoAa06dOiiBMFNaBUUnQXroKuOBReLuCmkFUeXLoEKaqxSpa0hSPxXRaqDRVCTVaR+
+                            Diklhry8RH/D457z7u+e877zLvy/DG5ukO022Shfv+2WJd+bc3Q97nTUB5ac9X68+QWAe73psgP2
+                            O+eEuwF84vbm1kFzG+s95p33wEY86fEoXxcAW/kKYEf4Hd5Y4UZYAjvDGvCdLVHmDgBW2QlA2i6P
+                            Ug4PAcgAkGI1jnVpfXXZSY8BOGEKwGd2N60cJOcYAIucZx4c51v4BGb4EH7G0U742iSAywYHfOsm
+                            sM+i/bGjAo/4ziSYN+VH02DKJU+1YAVwyFde9K6fveagVyw4VMslalQAhEXTnCHJNjIkWOBQ+PUX
+                            nbX4+sPebrHV9Tn/o9owm1WvV59ttu2IqmWrGqkDFqs8jymSZYUKlbbMIW8PVxnnHPtYCcXGbe83
+                            G/nVU2rZqWgsvT5vAu2Lj5pTnTMR8WaHi7Vxo1HNcCni3AvciYXjvMMNsod92egPr9/WZ8HTdbkT
+                            LrR0PcGU08445i6DvZ501unqfa9VkzYc5CwH6eEHT7kXCi1VbV1/AG958udLbo95AAAAJXRFWHRk
+                            YXRlOmNyZWF0ZQAyMDIzLTA3LTI0VDA4OjM0OjMyKzAyOjAwBsRX7gAAACV0RVh0ZGF0ZTptb2Rp
+                            ZnkAMjAyMy0wNy0yNFQwODozNDozMiswMjowMHeZ71IAAAAASUVORK5CYII=" />
+                            </svg>
+                        </i>
+                    </div>
+                </RouterLink>
+                <div class="bg-white absolute -bottom-1 -left-1 w-[50px] h-[40px]"></div>
+            </div>
+            <div class="flex w-4/5 justify-center shadow-[0_-1px_3px_0_#f6f6f6] rounded-[10px_30px_0_0] p-2 bg-white">
+                <!-- chad -->
+                <div class="flex items-center text-[12px] py-2">
+                    <RouterLink active-class="text-[#49b778]" ref="chad" to="/chad"
+                        class="w-[64px] h-[30px] flex flex-col gap-[5px] justify-center items-center rounded-full text-[#adadad]">
+                        <span fill="currentcolor">
+                            <svg width="20" height="20" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.20019 0H8.22886C9.62703 0.010007 10.9807 0.48644 12.0703 1.35197C13.1598 2.21749 13.9212 3.4213 14.2308 4.768C14.3436 5.2447 14.4004 5.73267 14.4 6.22222C14.4168 7.85552 13.7761 9.42855 12.6189 10.5954C11.4616 11.7622 9.88253 12.4273 8.22886 12.4444H2.05772C1.5065 12.4388 0.98011 12.2172 0.594302 11.8283C0.208495 11.4394 -0.00513931 10.9151 0.000378805 10.3707V7.25956C-0.0192958 5.35396 0.72814 3.51867 2.07831 2.15729C3.42848 0.795918 5.27083 0.019936 7.20019 0ZM8.48625 14.2222H5.45243C6.01814 14.7854 6.69108 15.2324 7.43249 15.5375C8.17391 15.8426 8.96912 15.9998 9.77232 16H15.9435C16.4945 15.9941 17.0207 15.7724 17.4063 15.3835C17.7919 14.9947 18.0054 14.4705 17.9999 13.9262V10.8151C18.0056 9.05175 17.3664 7.34566 16.1999 6.01067C16.1999 6.08059 16.1999 6.15111 16.1999 6.22222C16.2497 8.293 15.4653 10.2986 14.019 11.7986C12.5727 13.2986 10.5828 14.1703 8.48625 14.2222Z"
+                                    fill="currentcolor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M3 6.8C3 6.95823 3.04692 7.1129 3.13482 7.24446C3.22273 7.37602 3.34767 7.47855 3.49385 7.5391C3.64003 7.59965 3.80089 7.6155 3.95607 7.58463C4.11126 7.55376 4.2538 7.47757 4.36569 7.36569C4.47757 7.2538 4.55376 7.11126 4.58463 6.95607C4.6155 6.80089 4.59965 6.64003 4.5391 6.49385C4.47855 6.34767 4.37602 6.22273 4.24446 6.13482C4.1129 6.04692 3.95823 6 3.8 6C3.58783 6 3.38434 6.08429 3.23431 6.23431C3.08429 6.38434 3 6.58783 3 6.8ZM7 7.6C6.84177 7.6 6.6871 7.55308 6.55554 7.46518C6.42398 7.37727 6.32145 7.25233 6.2609 7.10615C6.20035 6.95997 6.1845 6.79911 6.21537 6.64393C6.24624 6.48874 6.32243 6.3462 6.43431 6.23431C6.5462 6.12243 6.68874 6.04624 6.84393 6.01537C6.99911 5.9845 7.15997 6.00035 7.30615 6.0609C7.45233 6.12145 7.57727 6.22398 7.66518 6.35554C7.75308 6.4871 7.8 6.64178 7.8 6.8C7.8 7.01217 7.71571 7.21566 7.56569 7.36569C7.41566 7.51571 7.21217 7.6 7 7.6ZM10.2 7.6C10.0418 7.6 9.8871 7.55308 9.75554 7.46518C9.62398 7.37727 9.52145 7.25233 9.4609 7.10615C9.40035 6.95997 9.3845 6.79911 9.41537 6.64393C9.44624 6.48874 9.52243 6.3462 9.63431 6.23431C9.7462 6.12243 9.88874 6.04624 10.0439 6.01537C10.1991 5.9845 10.36 6.00035 10.5061 6.0609C10.6523 6.12145 10.7773 6.22398 10.8652 6.35554C10.9531 6.4871 11 6.64178 11 6.8C11 7.01217 10.9157 7.21566 10.7657 7.36569C10.6157 7.51571 10.4122 7.6 10.2 7.6Z"
+                                    fill="white" />
+                            </svg>
+                        </span>
+                        <span fill="currentcolor">انجمن</span>
+                    </RouterLink>
+                </div>
+                <!-- info -->
+                <div class="flex items-center text-[12px] py-2">
+                    <RouterLink active-class="text-[#49b778]" ref="info" to="/info"
+                        class="w-[64px] h-[30px] flex flex-col gap-[5px] justify-center items-center rounded-full text-[#adadad]">
+                        <span class="currentcolor">
+                            <svg width="20" height="20" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.71084 3C7.71084 3.59334 7.54126 4.17336 7.22353 4.66671C6.9058 5.16006 6.4542 5.54458 5.92583 5.77164C5.39747 5.9987 4.81607 6.05811 4.25516 5.94236C3.69425 5.8266 3.17902 5.54088 2.77463 5.12132C2.37024 4.70176 2.09484 4.16721 1.98327 3.58527C1.8717 3.00333 1.92896 2.40013 2.14782 1.85195C2.36667 1.30377 2.73729 0.835235 3.21281 0.505591C3.68832 0.175947 4.24738 0 4.81928 0C5.58617 0 6.32165 0.31607 6.86392 0.87868C7.4062 1.44129 7.71084 2.20435 7.71084 3ZM10.8434 2C10.8434 1.80109 10.9195 1.61032 11.0551 1.46967C11.1907 1.32902 11.3745 1.25 11.5663 1.25H19.2771C19.4688 1.25 19.6527 1.32902 19.7883 1.46967C19.9238 1.61032 20 1.80109 20 2C20 2.19891 19.9238 2.38968 19.7883 2.53033C19.6527 2.67098 19.4688 2.75 19.2771 2.75H11.5663C11.3745 2.75 11.1907 2.67098 11.0551 2.53033C10.9195 2.38968 10.8434 2.19891 10.8434 2ZM10.8434 7C10.8434 6.80109 10.9195 6.61032 11.0551 6.46967C11.1907 6.32902 11.3745 6.25 11.5663 6.25H19.2771C19.4688 6.25 19.6527 6.32902 19.7883 6.46967C19.9238 6.61032 20 6.80109 20 7C20 7.19891 19.9238 7.38968 19.7883 7.53033C19.6527 7.67098 19.4688 7.75 19.2771 7.75H11.5663C11.3745 7.75 11.1907 7.67098 11.0551 7.53033C10.9195 7.38968 10.8434 7.19891 10.8434 7ZM13.494 11.25C13.3023 11.25 13.1184 11.329 12.9828 11.4697C12.8472 11.6103 12.7711 11.8011 12.7711 12C12.7711 12.1989 12.8472 12.3897 12.9828 12.5303C13.1184 12.671 13.3023 12.75 13.494 12.75H19.2771C19.4688 12.75 19.6527 12.671 19.7883 12.5303C19.9238 12.3897 20 12.1989 20 12C20 11.8011 19.9238 11.6103 19.7883 11.4697C19.6527 11.329 19.4688 11.25 19.2771 11.25H13.494ZM4.81928 14C7.48048 14 9.63855 12.657 9.63855 11C9.63855 9.343 7.48048 8 4.81928 8C2.15807 8 0 9.343 0 11C0 12.657 2.15807 14 4.81928 14Z"
+                                    fill="currentcolor" />
+                            </svg>
+                        </span>
+                        <span fill="currentcolor">بیشتر</span>
+                    </RouterLink>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        RouterLink
+
+
+        import { createRouter, createWebHistory } from "vue-router";
+import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/RegisterView.vue";
+import HomeView from "../views/HomeView.vue";
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: HomeView,
+    },
+    {
+      path: "/care",
+      name: "care",
+      component: () => import("../views/CareView.vue"),
+    },
+    {
+      path: "/prescription/:id",
+      name: "prescription",
+      component: () => import("../views/PrescriptionView.vue"),
+    },
+    {
+      path: "/chad",
+      name: "chad",
+      component: () => import("../views/ChadView.vue"),
+    },
+    {
+      path: "/garden",
+      name: "garden",
+      component: () => import("../views/GardenView.vue"),
+    },
+    {
+      path: "/garden/plants",
+      name: "plants",
+      component: () => import("../views/PlantsView.vue"),
+    },
+    {
+      path: "/garden/plant/:id",
+      name: "plant",
+      component: () => import("../views/PlantView.vue"),
+    },
+    {
+      path: "/garden/plantlibrary",
+      name: "plantLibrary",
+      component: () => import("../views/PlantLibraryView.vue"),
+    },
+    {
+      path: "/garden/addplant/:id",
+      name: "addplant",
+      component: () => import("../views/AddPlantView.vue"),
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: () => import("../views/ProfileView.vue"),
+    },
+    {
+      path: "/info",
+      name: "info",
+      component: () => import("../views/InfoView.vue"),
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginView,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: RegisterView,
+    },
+    {
+      path: "/about",
+      name: "about",
+      component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "notfound",
+      component: () => import("../views/NotFoundView.vue"),
+    },
+  ],
+});
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login", "/register"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("token");
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next("/login");
+  } else {
+    next();
+  }
+});
+export default router;

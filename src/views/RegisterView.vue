@@ -25,7 +25,8 @@ const loggedIn = computed(() =>{
 })
 onMounted(() => {
   if(loggedIn.value) {
-    router.push('/profile')
+    // router.push('/profile')
+    router.push('/garden/plantlibrary');
   }
 })
 const register = () => {
@@ -94,7 +95,7 @@ const authorizeInput = () => {
     <leftSvg class="absolute -top-10 left-0 max-w-[100px] opacity-40"></leftSvg>
     <rightSvg class="absolute top-0 right-0 max-w-[100px] opacity-40"></rightSvg>
   </div>
-  <div class="flex flex-col justify-center items-center h-[90svh]" @change="authorizeInput">
+  <div class="flex flex-col justify-center items-center h-[100svh]" @change="authorizeInput">
     <div class="max-w-[400px] w-full flex flex-col gap-2 p-2">
       
 

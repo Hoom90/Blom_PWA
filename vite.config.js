@@ -6,11 +6,11 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      registerType: "autoUpdate",
       manifest: {
-        name: "Blom",
+        name: "بلوم اپ| دکتر بلوم",
         short_name: "بلوم",
-        description:
-          "Blom is application which you can send your plant detail to understand what is wrong or what happend to your plant and get medical prescription to cure.",
+        description: "بلوم دستیار دیجیتال همراه گل و گیاه",
         display: "standalone",
         background_color: "#ffffff",
         theme_color: "#49b779",
@@ -18,8 +18,18 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "https://blom-server.iran.liara.run/library/images/icon.avif",
+            src: "/src/assets/512x512.png",
             sizes: "512x512",
+            type: "image/png",
+          },
+          {
+            src: "/src/assets/192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "/src/assets/144x144.png",
+            sizes: "144x144",
             type: "image/png",
           },
         ],
