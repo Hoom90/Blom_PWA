@@ -21,6 +21,7 @@ async function getData() {
         if(data.length != 0){
             loading.value = false
             prescription.value = data[0];
+            console.log(data)
         }
     })
 }
@@ -49,7 +50,7 @@ async function getData() {
                             <span class="text-[12px] font-semibold">میزان سلامتی گیاه</span>
                         </div>
                     </div>
-                    <img :src="prescription.flowerFileName" class="max-w-[250px] h-[150px] rounded-md object-contain ">
+                    <img :src="prescription.plantImagesName.split(',')[0]" class="max-w-[250px] h-[150px] rounded-md object-contain ">
                 </div>
     
                 <div class="flex flex-col gap-[5px] px-[20px]" v-if="prescription.symptoms">

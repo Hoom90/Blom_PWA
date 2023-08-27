@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
-import RegisterView from "../views/RegisterView.vue";
-import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,19 +10,24 @@ const router = createRouter({
       component: () => import("../views/PlantLibraryView.vue"),
     },
     {
+      path: "/garden",
+      name: "garden",
+      component: () => import("../views/GardenView.vue"),
+    },
+    {
       path: "/addplant/:id",
       name: "addplant",
       component: () => import("../views/AddPlantView.vue"),
     },
     {
+      path: "/prescription/:id",
+      name: "prescription",
+      component: () => import("../views/PrescriptionView.vue"),
+    },
+    {
       path: "/login",
       name: "login",
       component: LoginView,
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: RegisterView,
     },
     {
       path: "/:pathMatch(.*)*",
@@ -34,7 +37,7 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/register"];
+  const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("token");
   // trying to access a restricted page + not logged in

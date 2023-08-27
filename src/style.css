@@ -2,25 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+/* @font-face {
   font-family: vazir;
   src: url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+} */
+
+@font-face {
+  font-family: 'Pelak';
+  src: url('assets/font/TTF/PelakNoEng-Regular.ttf') format('truetype');
 }
 
-body{
-  font-family: vazir,sans-serif;
+body {
+  font-family: Pelak, sans-serif;
 }
 
 /* scrollbar */
-::-webkit-scrollbar{
-    width: 0;
+::-webkit-scrollbar {
+  width: 0;
 }
+
 /* end scrollbar */
 
 
 input[type=range] {
   -webkit-appearance: none;
-  appearance: none; 
+  appearance: none;
   width: 100%;
   cursor: pointer;
   outline: none;
@@ -33,7 +39,7 @@ input[type=range] {
 
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none; 
+  appearance: none;
   height: 20px;
   width: 20px;
   background-color: #49B779;
@@ -52,23 +58,27 @@ input[type=range]::-moz-range-thumb {
 }
 
 input[type=range]::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 10px rgba(73,183,121, .1)
+  box-shadow: 0 0 0 10px rgba(73, 183, 121, .1)
 }
+
 input[type=range]:active::-webkit-slider-thumb {
-  box-shadow: 0 0 0 13px rgba(73,183,121, .2)
+  box-shadow: 0 0 0 13px rgba(73, 183, 121, .2)
 }
+
 input[type=range]:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 13px rgba(73,183,121, .2)
+  box-shadow: 0 0 0 13px rgba(73, 183, 121, .2)
 }
 
 input[type=range]::-moz-range-thumb:hover {
-  box-shadow: 0 0 0 10px rgba(73,183,121, .1)
+  box-shadow: 0 0 0 10px rgba(73, 183, 121, .1)
 }
+
 input[type=range]:active::-moz-range-thumb {
-  box-shadow: 0 0 0 13px rgba(73,183,121, .2)
+  box-shadow: 0 0 0 13px rgba(73, 183, 121, .2)
 }
+
 input[type=range]:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 13px rgba(73,183,121, .2)    
+  box-shadow: 0 0 0 13px rgba(73, 183, 121, .2)
 }
 
 
@@ -79,7 +89,7 @@ input[type=range]:focus::-moz-range-thumb {
   position: absolute;
   pointer-events: none;
   top: 10px;
-  right: 12px;
+  right: 70px;
   transition: all 0.1s ease;
 }
 
@@ -117,12 +127,12 @@ input:focus~.floating-label {
   border-radius: 5px;
 }
 
-.control input:checked ~ .control__indicator {
+.control input:checked~.control__indicator {
   background: #49B779;
   border: transparent
 }
 
-.control input:disabled ~ .control__indicator {
+.control input:disabled~.control__indicator {
   background: grey;
   opacity: 0.6;
   pointer-events: none;
@@ -134,7 +144,7 @@ input:focus~.floating-label {
   display: none;
 }
 
-.control input:checked ~ .control__indicator:after {
+.control input:checked~.control__indicator:after {
   display: block;
 }
 
@@ -147,4 +157,23 @@ input:focus~.floating-label {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
 /* end checkbox */
+
+/* rotate animation */
+.rotate {
+  animation: rotate 1s linear infinite;
+  transition: translate(50%, 50%);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* end rotate animation */

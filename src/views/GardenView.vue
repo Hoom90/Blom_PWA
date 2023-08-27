@@ -37,8 +37,7 @@ async function getData() {
 }
 
 const checkStatus = (status) =>{
-    status === "done" ? true : false
-    if(status){
+    if(status === "done" ? true : false){
         return "border-black"
     }
     else{
@@ -85,17 +84,17 @@ const deletePlant = async (id) => {
 
     <div>
         <div v-if="loading && hasData" class="absolute top-0 left-0 w-full bg-[#fffe]">
-            <div class="h-[90vh] flex flex-col gap-[10px] text-blue-500 items-center justify-center">
+            <div class="h-[100vh] flex flex-col gap-[10px] text-[#49b779] items-center justify-center">
                 <span class="text-[20px] font-bold">
                     در حال بارگزاری....
                 </span>
             </div>
         </div>
 
-        <div v-else class="overflow-y-auto h-[92svh] bg-[#49B77914] relative">
+        <div v-else class="overflow-y-auto h-[100svh] bg-[#49B77914] relative">
 
             <!-- fixed -->
-            <div class="fixed p-[20px] max-w-[400px] w-full h-[90svh]">
+            <div class="fixed p-[20px] max-w-[400px] w-full h-[100svh]">
                 <div class="flex flex-col gap-5 h-full">
 
                     <span class="text-[20px] font-bold">گلخونه من</span>
@@ -242,8 +241,8 @@ const deletePlant = async (id) => {
                     <!-- 4 latest plant for prescription -->
                     <div v-if="hasData && userData" class="max-w-[360px] flex flex-wrap justify-around gap-2.5">
                         <RouterLink class="relative" :to="'/prescription/'+flower._id" v-for="(flower,index) in userData.slice().reverse()" :key="flower._id">
-                            <img v-if="index < 4" :src="flower.fileName" loading="lazy" class="object-cover aspect-square w-[150px] h-[150px] overflow-hidden rounded-full p-[1px] bg-white shadow-md" alt="picture" />
-                            <div v-if="index < 4" class="border-[2px] bg-white w-fit rounded-full p-1 absolute bottom-1 right-7" :class="checkStatus(flower.status)"></div>
+                            <img v-if="index < 3" :src="flower.fileName.split(',')[0]" loading="lazy" class="object-cover aspect-square w-[150px] h-[150px] overflow-hidden rounded-full p-[1px] bg-white shadow-md" alt="picture" />
+                            <div v-if="index < 3" class="border-[2px] bg-white w-fit rounded-full p-1 absolute bottom-1 right-7" :class="checkStatus(flower.status)"></div>
                         </RouterLink>
                     </div>
 
@@ -259,7 +258,7 @@ const deletePlant = async (id) => {
                         <div class="flex gap-[5px] justify-end p-[20px]">
                             <!-- <RouterLink to="/garden/plants" class="p-2 px-3 rounded-lg bg-[#49B779] text-white">همه گل ها
                             </RouterLink> -->
-                            <RouterLink to="/garden/plantLibrary" class="w-[40px] h-[40px] bg-[#49B779] rounded-full text-white flex justify-center items-center">
+                            <RouterLink to="/" class="w-[40px] h-[40px] bg-[#49B779] rounded-full text-white flex justify-center items-center">
                                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 7V17M7 12H17" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
@@ -274,14 +273,14 @@ const deletePlant = async (id) => {
                     <!-- header -->
                     <div class="flex justify-between items-center mb-[10px]" id="plantheadercontainer">
                         <span id="pageTag" class="text-center font-bold">همه گلها</span>
-                        <button class="text-[#0000006f]">
+                        <!-- <button class="text-[#0000006f]">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6 3L6 21M6 3L10 7M6 3L2 7" stroke="currentcolor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M18 21L18 3M18 21L22 17M18 21L14 17" stroke="currentcolor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                        </button>
+                        </button> -->
                     </div>
                     <!-- content -->
                     <div class="flex flex-col gap-[10px] mb-[10px] h-[50vh]">
@@ -289,7 +288,7 @@ const deletePlant = async (id) => {
                         <div class="flex flex-col gap-[10px]" v-for="flower in userData">
                             <div class="flex justify-between items-center gap-[5px] shadow-[0_0_4px_0_#c9c9c9] px-[10px] p-1 rounded-md">
                                 <RouterLink :to="'/prescription/'+flower._id" class="flex gap-[5px] w-1/2">
-                                    <img :src="flower.fileName" loading="lazy" class="aspect-square object-cover w-[50px] h-[50px] rounded-full" alt="" />
+                                    <img :src="flower.fileName.split(',')[0]" loading="lazy" class="aspect-square object-cover w-[50px] h-[50px] rounded-full" alt="" />
                                     <div class="flex flex-col">
                                         <span>{{ flower.name }}</span>
                                         <span class="text-[12px]">{{ flower.createdAt.split("T")[0] }}</span>
@@ -317,7 +316,7 @@ const deletePlant = async (id) => {
             </div>
             
             <!-- plus button -->
-            <RouterLink v-if="!hasData && !userData" to="/garden/plantLibrary" class="absolute bottom-[30px] left-[20px] w-[50px] h-[50px] bg-[#49B779] rounded-full text-white flex justify-center items-center">
+            <RouterLink v-if="!hasData && !userData" to="/" class="absolute bottom-[30px] left-[20px] w-[50px] h-[50px] bg-[#49B779] rounded-full text-white flex justify-center items-center">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 7V17M7 12H17" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
