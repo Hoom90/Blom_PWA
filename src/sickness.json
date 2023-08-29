@@ -1,0 +1,82 @@
+[
+    {
+        "image": "healthy_leaf.avif",
+        "name": "برگاش سالمه!"
+    },
+    {
+        "image": "Browned_leaf.avif",
+        "name": "قهوه ای شده"
+    },
+    {
+        "image": "Yellowed_leaf.avif",
+        "name": "زرد شده"
+    },
+    {
+        "image": "Spined_leaf.avif",
+        "name": "(لوله شده)پیچ خورده"
+    },
+    {
+        "image": "Falling_leaf.avif",
+        "name": "برگاش میریزه"
+    },
+    {
+        "image": "Burned_leaf.avif",
+        "name": "برگاش سوخته"
+    },
+    {
+        "image": "Grow_leaf.avif",
+        "name": "برگاش رشد نمیکنه"
+    },
+    {
+        "image": "Droped_leaf.avif",
+        "name": "برگاش آویزون شده"
+    },
+    {
+        "image": "Insected_leaf.avif",
+        "name": "پشت برگاش حشره داره"
+    },
+    {
+        "image": "Healthy_body.avif",
+        "name": "ساقه اش سالمه!"
+    },
+    {
+        "image": "Week_body.avif",
+        "name": "ساقه اش نرم شده"
+    },
+    {
+        "image": "Color_body.avif",
+        "name": "رنگ ساقه اش عوض شده"
+    },
+    {
+        "image": "Broken_body.avif",
+        "name": "ساقه اش پوک شده"
+    },
+    {
+        "image": "Grow_body.avif",
+        "name": "ساقه هاش رشد نمیکنه"
+    },
+    {
+        "image": "Healthy_root.avif",
+        "name": "ریشه اش سالمه!"
+    },
+    {
+        "image": "Access_root.avif",
+        "name": "دسترسی ندارم (نمیبینم)"
+    },
+    {
+        "image": "Rot_root.avif",
+        "name": "ریشه اش پوسیده"
+    },
+    {
+        "image": "Aired_root.avif",
+        "name": "ریشه اش هوا خورده"
+    },
+    {
+        "image": "Over_root.avif",
+        "name": "از زیر گلدون زده بیرون"
+    },
+    {
+        "image": "Flying_root.avif",
+        "name": "از روی خاک زده بیرون"
+    }
+]

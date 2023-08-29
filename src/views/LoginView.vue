@@ -92,8 +92,10 @@ const authorizeInput = () => {
 const userNeed = ref(false)
 const openAlert = ref(false)
 const clickCounter = () => {
-  if (!userNeed.value) {
-    userNeed.value = true
+  if (!openAlert.value) {
+    if(!userNeed.value){
+      userNeed.value = true
+    }
     openAlert.value = true
   }
 }

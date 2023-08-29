@@ -2,13 +2,16 @@
 import { defineProps, ref, watch, getCurrentInstance } from 'vue';
 const props = defineProps({
     name: {
-        type: String,
         required: true,
     },
     level: {
-        type: Number,
         required: true,
     },
+});
+
+watch(() => props.level, (newValue) => {
+    level.value = newValue;
+    handleButton()
 });
 
 const handleButton = () => {
