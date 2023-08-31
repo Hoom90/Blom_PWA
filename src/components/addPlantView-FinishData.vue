@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, watch, getCurrentInstance ,onBeforeMount } from 'vue';
+import { defineProps, ref, watch, getCurrentInstance ,onBeforeMount ,onMounted } from 'vue';
 import serverURL from '../router/serverAddress'
 import data from '../sickness.json'
 const props = defineProps({
@@ -30,6 +30,78 @@ onBeforeMount(() => {
         }
     })
 })
+
+onMounted(() => {
+    initSoil(props.symptoms != null ? props.symptoms : [])
+})
+
+const initSoil = (data) => {
+    const button = document.querySelectorAll("#symptomButton");
+    console.log(button)
+    for(let i=0;i<data.length;i++){
+        if (data[i] === "برگاش سالمه!") {
+                        button[0].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "(قهو ای شده") {
+                        button[1].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "زرد شده") {
+                        button[2].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "(لوله شده)پیچ خورده") {
+                        button[3].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "برگاش میریزه") {
+                        button[4].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "برگاش سوخته") {
+                        button[5].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "برگاش رشد نمیکنه") {
+                        button[6].classList.replace("border-transparent", "border-[#49b779]");
+
+        }if (data[i] === "برگاش آویزون شده") {
+                        button[7].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "(پشت برگاش حشره داره") {
+                        button[8].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ساقه اش سالمه!") {
+                        button[9].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ساقه اش نرم شده") {
+                        button[10].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "رنگ ساقه اش عوض شده") {
+                        button[11].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ساقه اش پوک شده") {
+                        button[12].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ساقه هاش رشد نمکنه") {
+                        button[13].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ریشه اش سالمه!") {
+                        button[14].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "(نمیبینم)دسترسی ندارم") {
+            button[15].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ریشه اش پوسیده") {
+                        button[16].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "ریشه اش هوا خورده") {
+                        button[17].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "از زیر گلدون زده بیرون") {
+                        button[18].classList.replace("border-transparent", "border-[#49b779]");
+
+        } if (data[i] === "از روی خاک زده بیرون") {
+                        button[19].classList.replace("border-transparent", "border-[#49b779]");
+
+        }
+    }
+}
 
 const symptoms = ref(props.symptoms)
 const description = ref(props.description)

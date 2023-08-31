@@ -120,7 +120,7 @@ const sortTable = () => {
         </div>
 
         <!-- main -->
-        <div id="plantlibrary" class="overflow-y-auto mt-[120px] px-[20px] pb-[80px] grid grid-cols-2 gap-3">
+        <div id="plantlibrary" class="overflow-y-auto mt-[120px] px-[20px] pb-[100px] grid grid-cols-2 gap-3">
 
             <RouterLink :to="'/addplant/' + flower.id" v-for="flower in data" id="libraryData"
                 class="col-span-1 shadow rounded bg-white pb-3">
@@ -150,12 +150,12 @@ const sortTable = () => {
 
         <!-- footer button -->
         <div
-            class="max-w-[400px] flex justify-center gap-3 fixed w-full bottom-0 px-[20px] pt-[10px] pb-[10px] z-10 bg-white">
+            class="max-w-[400px] flex justify-center gap-3 fixed w-full bottom-0 p-[10px] px-[20px] text-[14px] z-10 bg-white">
             <RouterLink to="/addplant/-1"
-                class="bg-[#49b7792c] px-3 py-2 rounded hover:bg-[#49b779] transition-all duration-300">نمیدونم گلم چیه
+                class="bg-[#49b7792c] px-3 py-2 rounded">نمیدونم گلم چیه
             </RouterLink>
             <RouterLink to="/addplant/0"
-                class="bg-[#49b7792c] px-3 py-2 rounded hover:bg-[#49b779] transition-all duration-300">اسم گلم تو لیست
+                class="bg-[#49b7792c] px-3 py-2 rounded">اسم گلم تو لیست
                 نیست
             </RouterLink>
 

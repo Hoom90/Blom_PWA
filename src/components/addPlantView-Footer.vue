@@ -31,9 +31,6 @@ watch([level,saveData], ([newValue,newsaveData]) => {
 });
 
 const increaseLevel = () => {
-    if(level.value === 3){
-        saveData.value = true
-    }
     if(level.value != 4){
         level.value = level.value + 1
     }

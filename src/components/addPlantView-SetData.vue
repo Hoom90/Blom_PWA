@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, watch, getCurrentInstance } from 'vue';
+import { defineProps, ref, watch, getCurrentInstance , onMounted } from 'vue';
 
 const props = defineProps({
     light: {
@@ -18,6 +18,86 @@ const props = defineProps({
         required: true,
     }
 });
+
+onMounted(() => {
+    initLight(props.light != null ? props.light : [])
+    initWater(props.water != null ? props.water : [])
+    initTemprature(props.temprature != null ? props.temprature : [])
+    initSoil(props.soil != null ? props.soil : [])
+})
+
+const initLight = (data) =>{
+    const lightButton = document.querySelectorAll("#lightButton");
+    if (data === "نور خورشید(مستقیم)") {
+        lightButton[0].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "نور خورشید(غیر مستقیم)") {
+        lightButton[1].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "(فیلتر دار)نور خورشید") {
+        lightButton[2].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "(چراغ رشد)نور مصنوعی") {
+        lightButton[3].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "(تاریک یا نور خونه)بدون نور") {
+        lightButton[4].classList.replace("border-transparent", "border-[#49b779]");
+    }
+}
+
+const initWater = (data) =>{
+    const button = document.querySelectorAll("#waterButton");
+    if (data === "خشک") {
+        button[0].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "مرطوب") {
+        button[1].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "خیس") {
+        button[2].classList.replace("border-transparent", "border-[#49b779]");
+    } if (data === "گلم آبزیه") {
+        button[3].classList.replace("border-transparent", "border-[#49b779]");
+    }
+}
+
+const initTemprature = (data) =>{
+    const button = document.querySelector("#tempButton")
+    if (data == "معتدل") {
+        button.value = 1
+    }
+    if (data == "گرم") {
+        button.value = 2
+    }
+    if (data == "سرد") {
+        button.value = 3
+    }
+    if(data > 4){
+        button.value = 4
+        temprature.value = data
+    }
+}
+
+const initSoil = (data) => {
+    const button = document.querySelectorAll("#soilButton");
+    for(let i=0;i<data.length;i++){
+        if (data[i] === "گلم آبزیه") {
+            button[0].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "(آب سریع به کف گلدون میرسه)خاکش سبکه") {
+            button[1].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "آب دیر به کف گلدون میرسه)خاکش سنگینه") {
+            button[2].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "خاکش سفته") {
+            button[3].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "روی خاکش کپک زده") {
+            button[4].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "روی خاکش شوره زده") {
+            button[5].classList.replace("border-transparent", "border-[#49b779]");
+    
+        } if (data[i] === "خاکش حشره داره") {
+            button[6].classList.replace("border-transparent", "border-[#49b779]");
+    
+        }
+    }
+}
 
 const light = ref(props.light)
 const water = ref(props.water)
@@ -52,19 +132,14 @@ const setLight = (number) => {
 
   if(number === 1){
   light.value = "نور خورشید(مستقیم)";
-
   }if(number === 2){
   light.value = "نور خورشید(غیر مستقیم)";
-    
 }if(number === 3){
   light.value = "(فیلتر دار)نور خورشید";
-    
 }if(number === 4){
   light.value = "(چراغ رشد)نور مصنوعی";
-    
 }if(number === 5){
-  light.value = "(تاریک یا نور خونه)بدون نور";
-    
+  light.value = "(تاریک یا نور خونه)بدون نور"; 
 }
   
   if(flag1.value){
@@ -116,12 +191,16 @@ const setTemp = (e) =>{
         tempRange.value.classList.replace('flex', 'hidden')
         tempSelect.value.classList.replace('w-1/3', 'w-full')
         if (e.target.value == 1) {
+            temprature.value = null
             temprature.value = "معتدل"
         }
+            temprature.value = null
         if (e.target.value == 2) {
+            temprature.value = null
             temprature.value = "گرم"
         }
         if (e.target.value == 3) {
+            temprature.value = null
             temprature.value = "سرد"
         }
     }
@@ -132,7 +211,7 @@ const setTemp = (e) =>{
 }
 
 const setTempRange = (e) => {
-    temprature.value = "درجه" + e.target.value
+    temprature.value = e.target.value
 }
 
 const flag = [false,false,false,false,false,false,false]
@@ -492,13 +571,13 @@ const setSoil = (number) => {
                     <span class="text-[12px]">گلت توی چه دمایی زندگی میکنه؟</span>
                 </div>
                 <div class="flex gap-[5px] items-center w-full">
-                    <select ref="tempSelect" class="w-full p-[5px] border border-[#49b779] rounded bg-white outline-none transition-all duration-200"
+                    <select ref="tempSelect" id="tempButton" class="w-full p-[5px] border border-[#49b779] rounded bg-white outline-none transition-all duration-200"
                         @input="setTemp">
                         <option selected disabled>انتخاب کنید</option>
                         <option value="1">معتدل</option>
                         <option value="2">گرم</option>
                         <option value="3">سرد</option>
-                        <option value="4">{{ temprature < 4 ? "" : temprature }} درجه</option>
+                        <option value="4">{{ !isNaN(temprature) ? temprature != null ? temprature + " درجه" : "درجه" : "درجه" }}</option>
                     </select>
                     <div ref="tempRange" class="w-2/3 gap-[5px] items-center text-[16px] hidden">
                         <input @input="setTempRange" type="range" min="20" max="45" dir="ltr" value="22">

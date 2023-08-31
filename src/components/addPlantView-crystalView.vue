@@ -29,8 +29,20 @@ const props = defineProps({
     }
 });
 
+const timer = ref(300)
+const timerCounter = () =>{
+  setInterval(() => {
+    if(timer.value === 0){
+        return
+    }
+    timer.value--
+    if(timer.value === 0){
+      clearInterval()
+    }
+  }, 1000)
+}
 
-
+timerCounter()
 </script>
 <template>
     <div class="max-w-[400px] w-full flex flex-col gap-2 p-[20px] mb-[80px]">
@@ -42,8 +54,11 @@ const props = defineProps({
                 <span>نسخه ات آمادست</span>
             </div>
             <div class="flex justify-center items-center">
-                <div class="bg-[#e9e9e9] rounded-full p-1 px-2">
-                    05:00
+                <div class="bg-[#e9e9e9] rounded-full p-1 px-2" v-if="timer != 0">
+                    {{ Math.floor(timer/60) }}:{{ timer%60 < 10 ? '0' + timer%60 : timer%60 }}
+                </div>
+                <div class="bg-[#e9e9e9] rounded-full p-1 px-2" v-else>
+                   مثل اینکه کارت بیشتر طول کشید! 
                 </div>
             </div>
             <div class="flex gap-1 justify-center items-center text-[12px]">
@@ -61,7 +76,7 @@ const props = defineProps({
         <div class="grid grid-cols-3 gap-1">
             
             <div class="col-span-2 flex items-center justify-center border rounded-lg p-2">
-                مرور اطلاعتی که وارد کردی
+                مرور اطلاعاتی که وارد کردی
             </div>
             
             <div class="col-span-1 flex flex-col justify-center items-center gap-1 rounded-lg bg-[#49b7792c] p-2">
@@ -69,31 +84,38 @@ const props = defineProps({
                 <span class="text-[#49b779] text-[20px] font-bold">%{{ props.score }}</span>
             </div>
             
-            <div class="col-span-1 bg-[#e9e9e9] rounded-lg">
-                <img :src="serverURL + '/flower/images/' + props.filename[0]" class="object-cover w-full rounded-lg" :alt="props.filename[0]">
+            <div class="col-span-1 border rounded-lg">
+                <img v-if="props.filename.length != 0" :src="serverURL + '/flower/images/' + props.filename[0]" class="object-cover w-full rounded-lg" :alt="props.filename[0]">
+                <div v-else class="flex justify-center items-center w-full h-full rounded-lg text-[12px] text-[#49b779]">
+                    عکسی نداری
+                </div>
             </div>
 
             <div class="col-span-2 bg-[#49b7792c] rounded-lg p-2 text-[12px]">
-                <span>گلت <strong>{{ props.name }}</strong> بود</span>
-                <div class="flex gap-1">
+                <span v-if="props.name == 'پیدا نکردم' || props.name == 'نمیشناسم'">
+                    <span class="text-[#49b779] ml-1">اسم گل:</span>
+                    <span>نامعلوم</span>
+                </span>
+                <span v-else>گلت <strong>{{ props.name }}</strong> بود</span>
+                <div class="flex gap-1" v-if="props.light">
                     <span class="text-[#49b779]">نور:</span>
                     <span>{{ props.light }}</span>
                 </div>
-                <div class="flex gap-1">
+                <div class="flex gap-1" v-if="props.water">
                     <span class="text-[#49b779]">وضعیت خاک هنگام آبیاری:</span>
                     <span>{{ props.water}}</span>
                 </div>
-                <div class="flex gap-1">
+                <div class="flex gap-1" v-if="props.temprature">
                     <span class="text-[#49b779]">دمای محیط:</span>
                     <span>{{ props.temprature }}</span>
                 </div>
-                <div class="flex flex-col gap-1">
+                <div class="flex flex-col gap-1" v-if="props.soil.length != 0">
                     <span class="text-[#49b779]">نوع خاک:</span>
                     <span class="flex gap-1 truncate text-[10px]" v-for="item in props.soil">{{ item }}</span>
                 </div>
             </div>
 
-            <div class="col-span-3 bg-[#49b7792c] rounded-lg p-2 text-[12px]">
+            <div class="col-span-3 bg-[#49b7792c] rounded-lg p-2 text-[12px]" v-if="props.symptoms.length != 0">
                 <div class="flex flex-col gap-1">
                     <!-- <span class="text-[#49b779]">علائم برگ:</span> -->
                     <span class="text-[#49b779]">علائم :</span>

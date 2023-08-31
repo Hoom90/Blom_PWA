@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, watch, getCurrentInstance } from 'vue';
+import { defineProps, ref, watch, getCurrentInstance ,onMounted} from 'vue';
 import serverURL from '../router/serverAddress'
 
 const props = defineProps({
@@ -13,6 +13,17 @@ const props = defineProps({
         require:true,
     }
 });
+
+onMounted(() => {
+  file.value = props.file
+  file.value.forEach(item => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            userImages.value.push(event.target.result);
+        };
+        reader.readAsDataURL(item);
+    });
+})
 
 const userImages = ref([])
 const filename = ref(props.filename)
@@ -72,6 +83,7 @@ const setNewImage = (e) => {
         reader.readAsDataURL(item);
     });
 };
+
 </script>
 <template>
     <div class="max-w-[400px] w-full h-full flex flex-col gap-2 p-[20px] mb-[80px]">
